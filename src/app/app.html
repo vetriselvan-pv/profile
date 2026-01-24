@@ -1,0 +1,31 @@
+<div id="smooth-wrapper">
+  <div id="smooth-content">
+    <div
+      class="min-h-screen bg-[#050505] text-gray-200 selection:bg-brand-primary selection:text-white overflow-x-hidden">
+      <div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10">
+        <div
+          class="absolute top-[10%] left-[10%] w-120 h-120 bg-brand-primary/10 rounded-full blur-[120px] animate-pulse-slow">
+        </div>
+        <div
+          class="absolute bottom-[20%] right-[10%] w-100 h-100 bg-brand-secondary/10 rounded-full blur-[100px] animate-pulse-slow"
+          style="animation-delay: 2s"></div>
+      </div>
+      <app-home [name]="name()" [role]="role()" [contact]="contact()" [summary]="summary()" /> 
+      <div class="max-w-6xl mx-auto flex flex-col relative px-4">
+        <app-experience />
+        <app-skills />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <app-awards></app-awards>
+          <app-education></app-education>
+        </div>
+        <app-contact [email]="contact().email" [phone]="contact().phone" [location]="contact().location" />
+        <footer class="py-12 text-center text-sm text-gray-500 animate-fade-in border-t border-gray-900/50">
+          &copy; 2026 {{ name() }}. All rights reserved.
+        </footer>
+      </div>
+    </div>
+
+    <router-outlet />
+  </div>
+</div>
+<app-floating-menu />
