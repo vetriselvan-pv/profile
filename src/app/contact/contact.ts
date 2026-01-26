@@ -1,4 +1,4 @@
-import { Component, input, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <div class="space-y-8">
-          <p class="text-gray-400 text-lg leading-relaxed">
+          <p class="text-text-muted text-lg leading-relaxed transition-colors duration-500">
             I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
           </p>
           
@@ -23,8 +23,8 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-primary"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               </div>
               <div>
-                <p class="text-sm text-gray-500 uppercase tracking-widest">Email Me</p>
-                <a [href]="'mailto:' + email()" class="text-white hover:text-brand-primary transition-colors text-lg">{{ email() }}</a>
+                <p class="text-sm text-text-muted uppercase tracking-widest transition-colors duration-500">Email Me</p>
+                <a [href]="'mailto:' + email()" class="text-text-heading hover:text-brand-primary transition-colors duration-500 text-lg">{{ email() }}</a>
               </div>
             </div>
 
@@ -33,8 +33,8 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-secondary"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               </div>
               <div>
-                <p class="text-sm text-gray-500 uppercase tracking-widest">Call Me</p>
-                <a [href]="'tel:' + phone()" class="text-white hover:text-brand-secondary transition-colors text-lg">{{ phone() }}</a>
+                <p class="text-sm text-text-muted uppercase tracking-widest transition-colors duration-500">Call Me</p>
+                <a [href]="'tel:' + phone()" class="text-text-heading hover:text-brand-secondary transition-colors duration-500 text-lg">{{ phone() }}</a>
               </div>
             </div>
 
@@ -43,46 +43,46 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-accent"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
               </div>
               <div>
-                <p class="text-sm text-gray-500 uppercase tracking-widest">Location</p>
-                <p class="text-white text-lg">{{ location() }}</p>
+                <p class="text-sm text-text-muted uppercase tracking-widest transition-colors duration-500">Location</p>
+                <p class="text-text-heading text-lg transition-colors duration-500">{{ location() }}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="glass-dark p-8 rounded-3xl border border-gray-800 shadow-2xl relative overflow-hidden group">
+        <div class="glass-dark p-8 rounded-3xl border border-border-base shadow-2xl relative overflow-hidden group transition-colors duration-500">
           <div class="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-brand-primary to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
           
           <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
             <div class="space-y-2">
-              <label for="name" class="text-sm font-medium text-gray-400 ml-1">Name</label>
+              <label for="name" class="text-sm font-medium text-text-muted ml-1 transition-colors duration-500">Name</label>
               <input 
                 id="name" 
                 type="text" 
                 formControlName="name"
-                class="w-full bg-[#0a0a0a]/50 border border-gray-800 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary/50 transition-colors text-white"
+                class="w-full bg-bg-base/50 border border-border-base rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary/50 transition-colors duration-500 text-text-heading"
                 placeholder="Your Name"
               >
             </div>
             
             <div class="space-y-2">
-              <label for="email" class="text-sm font-medium text-gray-400 ml-1">Email</label>
+              <label for="email" class="text-sm font-medium text-text-muted ml-1 transition-colors duration-500">Email</label>
               <input 
                 id="email" 
                 type="email" 
                 formControlName="email"
-                class="w-full bg-[#0a0a0a]/50 border border-gray-800 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary/50 transition-colors text-white"
+                class="w-full bg-bg-base/50 border border-border-base rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary/50 transition-colors duration-500 text-text-heading"
                 placeholder="your@email.com"
               >
             </div>
 
             <div class="space-y-2">
-              <label for="message" class="text-sm font-medium text-gray-400 ml-1">Message</label>
+              <label for="message" class="text-sm font-medium text-text-muted ml-1 transition-colors duration-500">Message</label>
               <textarea 
                 id="message" 
                 formControlName="message"
                 rows="4"
-                class="w-full bg-[#0a0a0a]/50 border border-gray-800 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary/50 transition-colors text-white resize-none"
+                class="w-full bg-bg-base/50 border border-border-base rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary/50 transition-colors duration-500 text-text-heading"
                 placeholder="How can I help you?"
               ></textarea>
             </div>

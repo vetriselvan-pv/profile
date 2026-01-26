@@ -1,11 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+ 
 
 @theme {
-  --color-brand-primary: #3b82f6;
-  --color-brand-secondary: #8b5cf6;
-  --color-brand-accent: #ec4899;
+  --color-brand-primary: #41bdbb;
+  --color-brand-secondary: #62b6cb;
+  --color-brand-accent: #bee9e8;
+
+  --color-bg-base: #f2fbfa;
+  --color-text-base: #1e293b; /* slate-800 */
+  --color-text-muted: #64748b; /* slate-500 */
+  --color-text-heading: #0f172a; /* slate-900 */
+  --color-border-base: #e2e8f0; /* slate-200 */
+  
+  --color-glass-bg: rgba(255, 255, 255, 0.7);
+  --color-glass-border: rgba(255, 255, 255, 0.3);
+  --color-glass-shadow: rgba(31, 38, 135, 0.05);
+}
+
+@layer base {
+  :root.dark {
+    --color-bg-base: #0f172a; /* slate-900 */
+    --color-text-base: #e2e8f0; /* slate-200 */
+    --color-text-muted: #94a3b8; /* slate-400 */
+    --color-text-heading: #f8fafc; /* slate-50 */
+    --color-border-base: #1e293b; /* slate-800 */
+
+    --color-glass-bg: rgba(30, 41, 59, 0.7); /* slate-800 */
+    --color-glass-border: rgba(255, 255, 255, 0.1);
+    --color-glass-shadow: rgba(0, 0, 0, 0.3);
+  }
 }
 
 @keyframes float {
@@ -39,35 +64,37 @@
 }
 
 .animate-slide-up {
-  animation: slide-in-up 0.6s ease-out forwards;
+  animation: slide-in-up 0.4s ease-out forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn 1s ease-out forwards;
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px 0 var(--color-glass-shadow);
 }
 
 .glass-dark {
-  background: rgba(17, 24, 39, 0.7);
+  background: var(--color-glass-bg);
+  opacity: 0.9;
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px 0 var(--color-glass-shadow);
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #60a5fa, #a78bfa, #f472b6);
+  background: linear-gradient(to right, #41bdbb, #62b6cb, #bee9e8);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .border-gradient {
-  border-image: linear-gradient(to right, #60a5fa, #a78bfa, #f472b6) 1;
+  border-image: linear-gradient(to right, #41bdbb, #62b6cb, #bee9e8) 1;
 }
 
 

@@ -4,7 +4,7 @@ import { Component, signal } from '@angular/core';
   selector: 'app-skills',
   imports: [],
   template: `
-    <section id="skills" class="animate-slide-up pb-20" style="animation-delay: 0.4s">
+    <section id="skills" class="animate-slide-up pb-20">
       <h3 class="text-2xl font-bold mb-12 flex items-center gap-4">
         <span class="w-8 h-1 bg-brand-secondary rounded"></span>
         Skills
@@ -13,16 +13,16 @@ import { Component, signal } from '@angular/core';
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         @for (category of skills(); track category.category) {
           <div
-            class="glass-dark p-6 rounded-2xl border border-gray-800 hover:border-brand-secondary/30 transition-all"
+            class="glass-dark p-6 rounded-2xl border border-border-base hover:border-brand-secondary/30 transition-all duration-500"
           >
-            <h4 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+            <h4 class="text-lg font-bold text-text-heading mb-6 flex items-center gap-2 transition-colors duration-500">
               <span class="w-2 h-2 bg-brand-secondary rounded-full"></span>
               {{ category.category }}
             </h4>
             <div class="flex flex-wrap gap-3">
               @for (skill of category.items; track skill) {
                 <span
-                  class="px-4 py-2 glass rounded-xl text-sm text-gray-400 hover:text-white hover:bg-brand-secondary/10 transition-all cursor-default group"
+                  class="px-4 py-2 glass rounded-xl text-sm text-text-muted hover:text-brand-secondary hover:bg-brand-secondary/10 transition-all duration-500 cursor-default group"
                 >
                   {{ skill }}
                 </span>

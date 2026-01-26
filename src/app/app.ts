@@ -1,58 +1,42 @@
 import { Component, signal, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router'; 
-import { ContactComponent } from './contact/contact';
-import { FloatingMenuComponent } from './menu/floating-menu';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import ScrollSmoother from 'gsap/ScrollSmoother';
-import SplitText from 'gsap/SplitText';
-import { Experience } from './experience/experience';
-import { Skills } from './skills/skills';
-import { Awards } from "./awards/awards";
-import { Education } from "./education/education";
-import { Home } from "./home/home";
-
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+import { FloatingMenu } from './menu/floating-menu';
+import { ThemeToggleComponent } from './menu/theme-toggle';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,  ContactComponent, FloatingMenuComponent, Experience, Skills, Awards, Education, Home],
+  imports: [RouterOutlet, FloatingMenu, ThemeToggleComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App implements AfterViewInit {
-  protected readonly name = signal('VETRISELVAN PANNEERSELVAM');
-  protected readonly role = signal('Senior Fullstack Developer');
-  protected readonly contact = signal({
-    location: 'Chennai, India',
-    phone: '+91 6380677385',
-    email: 'vetrivaishu11@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/vetriselvan-panneerselvam',
-    github: 'https://github.com/vetriselvan-pv',
-    medium: 'https://medium.com/@vetriselvan_11',
-    devto: 'https://dev.to/vetriselvan_11',
-  });
+  protected readonly isDark = signal(false);
 
-  protected readonly summary = signal(
-    'Senior Fullstack Developer with 6+ years of experience specializing in Angular and scalable enterprise applications. Proven leader with experience mentoring teams, driving UI architecture, and delivering high-performance solutions. Strong expertise in reusable component design, workflow-driven banking platforms, and Agile development.',
-  ); 
-  
-  protected readonly languages = signal(['Tamil', 'English']);
+  constructor() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const initialDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    this.isDark.set(initialDark);
+    this.applyTheme(initialDark);
+  }
+
+  toggleTheme() {
+    const nextDark = !this.isDark();
+    this.isDark.set(nextDark);
+    localStorage.setItem('theme', nextDark ? 'dark' : 'light');
+    this.applyTheme(nextDark);
+  }
+
+  private applyTheme(isDark: boolean) {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
 
   ngAfterViewInit(): void {
-    ScrollSmoother.create({
-      smooth: 1,
-      effects: true,
-      smoothTouch: 0.1,
-    });
-    let split = SplitText.create('#portfolioName', { type: 'words, chars' });
-
-    gsap.from(split.chars, {
-      x: 100,
-      duration: 1,
-      ease: 'power4',
-      autoAlpha: 0,
-      stagger: 0.05,
-    });
+    // ScrollSmoother or other global setup if needed
   }
 }

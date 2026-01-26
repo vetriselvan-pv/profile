@@ -4,20 +4,20 @@ import { Component, signal } from '@angular/core';
   selector: 'app-awards',
   imports: [],
   template: `
-   <section id="awards" class="animate-slide-up pb-20" style="animation-delay: 0.6s">
+   <section id="awards" class="animate-slide-up pb-20">
               <h3 class="text-2xl font-bold mb-12 flex items-center gap-4">
                 <span class="w-8 h-1 bg-brand-accent rounded"></span>
                 Awards
               </h3>
               <div class="space-y-8">
                 @for (award of awards(); track award.title) {
-                <div class="glass-dark p-6 rounded-2xl border-l-2 border-brand-accent">
+                <div class="glass-dark p-6 rounded-2xl border-l-2 border-brand-accent transition-colors duration-500">
                   <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-bold text-white">{{ award.title }}</h4>
-                    <span class="text-xs text-brand-accent font-bold">{{ award.year }}</span>
+                    <h4 class="font-bold text-text-heading transition-colors duration-500">{{ award.title }}</h4>
+                    <span class="text-xs text-brand-secondary font-bold">{{ award.year }}</span>
                   </div>
-                  <p class="text-sm text-gray-400">{{ award.organization }}</p>
-                  <p class="text-sm text-gray-500 mt-2 italic">{{ award.description }}</p>
+                  <p class="text-sm text-text-muted transition-colors duration-500">{{ award.organization }}</p>
+                  <p class="text-sm text-text-muted mt-2 italic transition-colors duration-500">{{ award.description }}</p>
                 </div>
                 }
               </div>

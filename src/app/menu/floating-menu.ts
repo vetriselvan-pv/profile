@@ -1,8 +1,15 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, signal, AfterViewInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger)
 
 @Component({
   selector: 'app-floating-menu', 
-  imports: [],
+  imports: [CommonModule],
   template: `
     <nav
       class="fixed right-6 bottom-6 md:right-10 md:bottom-10 z-50 flex flex-col items-center gap-4"
@@ -17,13 +24,13 @@ import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
         @for (item of menuItems(); track item.id) {
           <button
             (click)="scrollToSection(item.id)"
-            class="p-4 glass-dark rounded-full shadow-lg border border-white/5 hover:border-brand-primary/40 text-gray-400 hover:text-white transition-all duration-300 relative group"
+            class="p-4 glass-dark rounded-full shadow-lg border border-slate-200 hover:border-brand-primary/40 text-slate-500 hover:text-brand-primary transition-all duration-300 relative group"
             [class.text-brand-primary]="activeSection() === item.id"
             [attr.aria-label]="'Scroll to ' + item.label"
           >
             <!-- Tooltip -->
             <span
-              class="absolute right-full mr-4 px-3 py-1.5 glass rounded-lg text-xs font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
+              class="absolute right-full mr-4 px-3 py-1.5 glass rounded-lg text-xs font-bold text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
             >
               {{ item.label }}
             </span>
@@ -62,6 +69,9 @@ import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
                     <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                   </svg>
+                }
+                @case ('projects') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
                 }
                 @case ('skills') {
                   <svg
@@ -131,6 +141,12 @@ import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
                     />
                   </svg>
                 }
+                @case ('testimonials') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l4-4V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2z"/><path d="M3 19V9a2 2 0 0 1 2-2h2"/></svg>
+                }
+                @case ('blogs') {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
+                }
               }
             </div>
             @if (activeSection() === item.id) {
@@ -140,6 +156,7 @@ import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
             }
           </button>
         }
+        
       </div>
       <button
         (click)="isMenuOpen.set(!isMenuOpen())"
@@ -190,18 +207,78 @@ import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
   `,
   styles: [],
 })
-export class FloatingMenuComponent {
+export class FloatingMenu implements AfterViewInit, OnDestroy {
   menuItems = signal([
     { id: 'home', label: 'Home' },
     { id: 'experience', label: 'Experience' },
+    { id: 'projects', label: 'Projects' },
     { id: 'skills', label: 'Skills' },
     { id: 'awards', label: 'Awards' },
     { id: 'education', label: 'Education' },
+    { id: 'testimonials', label: 'Testimonials' },
+    { id: 'blogs', label: 'Blogs' },
     { id: 'contact', label: 'Contact' },
   ]);
 
   activeSection = signal('home');
   isMenuOpen = signal(false);
+  private routeSubscription: any;
+
+  constructor(private router: Router) {}
+
+  ngAfterViewInit() {
+    // Listen for route changes to setup/refresh triggers
+    this.routeSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.refreshTriggers();
+    });
+
+    // Initial setup
+    this.refreshTriggers();
+  }
+
+  private refreshTriggers() {
+    this.killAllTriggers();
+    if (this.router.url === '/' || this.router.url === '') {
+      // Give Angular a moment to render the routed component
+      setTimeout(() => this.setupScrollTriggers(), 100);
+    }
+  }
+
+  private killAllTriggers() {
+    ScrollTrigger.getAll().forEach(t => {
+      if (t.vars.id && t.vars.id.startsWith('nav-')) {
+        t.kill();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+    this.killAllTriggers();
+  }
+
+  private setupScrollTriggers() {
+    this.menuItems().forEach(item => {
+      const element = document.getElementById(item.id);
+      if (element) {
+        ScrollTrigger.create({
+          id: `nav-${item.id}`,
+          trigger: element,
+          start: 'top 40%',
+          end: 'bottom 40%',
+          onToggle: self => {
+            if (self.isActive) {
+              this.activeSection.set(item.id);
+            }
+          },
+        });
+      }
+    });
+  }
 
   scrollToSection(id: string) {
     this.activeSection.set(id);

@@ -12,14 +12,14 @@ import { Component, input, signal } from '@angular/core';
       <div class="text-center md:text-left md:w-2/3 animate-slide-up">
         <h1
           id="portfolioName"
-          class="text-4xl md:text-7xl font-bold mb-6 tracking-tight text-white"
+          class="text-4xl md:text-7xl font-bold mb-6 tracking-tight text-text-heading transition-colors duration-500"
         >
           {{ name() }}
         </h1>
         <h2 class="text-2xl md:text-3xl font-medium text-brand-primary mb-8 text-gradient">
           {{ role() }}
         </h2>
-        <p class="text-gray-400 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto md:mx-0">
+        <p class="text-text-muted text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto md:mx-0 transition-colors duration-500">
           {{ summary() }}
         </p>
 
@@ -40,7 +40,7 @@ import { Component, input, signal } from '@angular/core';
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="text-gray-400 group-hover:text-brand-primary transition-colors"
+              class="text-slate-500 group-hover:text-brand-primary transition-colors"
             >
               <path
                 d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
@@ -66,7 +66,7 @@ import { Component, input, signal } from '@angular/core';
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="text-gray-400 group-hover:text-brand-primary transition-colors"
+              class="text-slate-500 group-hover:text-brand-primary transition-colors"
             >
               <path
                 d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
@@ -87,7 +87,7 @@ import { Component, input, signal } from '@angular/core';
               height="24"
               fill="currentColor"
               viewBox="0 0 24 24"
-              class="text-gray-400 group-hover:text-brand-primary transition-colors"
+              class="text-slate-500 group-hover:text-brand-primary transition-colors"
             >
               <path
                 d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.82 6.82 0 0 1 0 12a6.82 6.82 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42s-3.38-2.88-3.38-6.42 1.51-6.42 3.38-6.42 3.38 2.88 3.38 6.42zM24 12c0 3.17-.53 5.75-1.19 5.75s-1.19-2.58-1.19-5.75.53-5.75 1.19-5.75S24 8.83 24 12z"
@@ -107,7 +107,7 @@ import { Component, input, signal } from '@angular/core';
               height="24"
               fill="currentColor"
               viewBox="0 0 512 512"
-              class="text-gray-400 group-hover:text-brand-primary transition-colors"
+              class="text-slate-500 group-hover:text-brand-primary transition-colors"
             >
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -123,7 +123,7 @@ import { Component, input, signal } from '@angular/core';
         </div>
       </div>
 
-      <div class="md:w-1/3 flex justify-center animate-slide-up" style="animation-delay: 0.1s">
+      <div class="md:w-1/3 flex justify-center animate-slide-up">
         <div class="relative w-48 h-48 md:w-64 md:h-64 group">
           <div
             class="absolute -inset-4 bg-gradient-to-tr from-brand-primary/30 to-brand-secondary/30 rounded-full blur-2xl animate-pulse-slow opacity-50 group-hover:opacity-100 transition-opacity"
@@ -134,11 +134,11 @@ import { Component, input, signal } from '@angular/core';
           >
             <img
               ngSrc="profile.png"
-              width="256"
-              height="256"
+              width="184"
+              height="184"
               alt="Vetriselvan Panneerselvam"
               priority
-              class="rounded-full object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105"
+              class="rounded-full object-cover w-full h-full grayscale-0 hover:grayscale  transition-all duration-500 transform group-hover:scale-105"
             />
           </div>
         </div>
@@ -157,7 +157,7 @@ import { Component, input, signal } from '@angular/core';
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="text-gray-500"
+          class="text-text-muted transition-colors duration-500"
         >
           <path d="m6 9 6 6 6-6" />
         </svg>

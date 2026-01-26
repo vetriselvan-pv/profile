@@ -4,7 +4,7 @@ import { Component, signal } from '@angular/core';
   selector: 'app-experience',
   imports: [],
   template: `
-    <section id="experience" class="animate-slide-up pb-20" style="animation-delay: 0.2s">
+    <section id="experience" class="animate-slide-up pb-20">
       <h3 class="text-2xl font-bold mb-12 flex items-center gap-4">
         <span class="w-8 h-1 bg-brand-primary rounded"></span>
         Experience
@@ -12,9 +12,9 @@ import { Component, signal } from '@angular/core';
 
       <div class="space-y-16">
         @for (job of experience(); track job.title + job.company) {
-          <div class="relative pl-10 border-l border-gray-800 group">
+          <div class="relative pl-10 border-l border-border-base transition-colors duration-500 group">
             <div
-              class="absolute -left-[5px] top-2 w-2.5 h-2.5 bg-gray-700 rounded-full group-hover:bg-brand-primary transition-colors ring-4 ring-[#050505]"
+              class="absolute -left-[5px] top-2 w-2.5 h-2.5 bg-text-muted rounded-full group-hover:bg-brand-primary transition-colors ring-4 ring-bg-base transition-colors duration-500"
             ></div>
 
             <div
@@ -22,11 +22,11 @@ import { Component, signal } from '@angular/core';
             >
               <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2">
                 <h4
-                  class="text-xl font-bold text-white group-hover:text-brand-primary transition-colors"
+                  class="text-xl font-bold text-text-heading group-hover:text-brand-primary transition-colors duration-500"
                 >
                   {{ job.title }}
                 </h4>
-                <span class="text-sm px-3 py-1 glass rounded-full text-gray-400">
+                <span class="text-sm px-3 py-1 glass rounded-full text-text-muted transition-colors duration-500">
                   {{ job.period }}
                 </span>
               </div>
@@ -50,13 +50,13 @@ import { Component, signal } from '@angular/core';
                   <path d="M10 14h4" />
                   <path d="M10 18h4" />
                 </svg>
-                <span class="font-medium">{{ job.company }}</span>
-                <span class="text-gray-600">&bull;</span>
-                <span class="text-gray-500 text-sm">{{ job.location }}</span>
+                <span class="font-medium text-text-heading transition-colors duration-500">{{ job.company }}</span>
+                <span class="text-text-muted transition-colors duration-500">&bull;</span>
+                <span class="text-text-muted text-sm transition-colors duration-500">{{ job.location }}</span>
               </div>
               <ul class="space-y-2">
                 @for (bullet of job.description; track $index) {
-                  <li class="text-gray-400 flex gap-3">
+                  <li class="text-text-muted flex gap-3 transition-colors duration-500">
                     <span class="text-brand-primary mt-1.5">•</span>
                     <span>{{ bullet }}</span>
                   </li>
