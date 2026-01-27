@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "server/src/*.ts": {
+      "runtime": "nodejs24.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/server/src/(.*)",
+      "destination": "/server/src/$1"
+    }
+  ]
+}
