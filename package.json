@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "git-build" : "ng build --configuration production --base-href /profile/",
+    "git-deploy" : "sudo npx angular-cli-ghpages --dir=dist/portfolio/browser"
   },
   "prettier": {
     "printWidth": 100,
