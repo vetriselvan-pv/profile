@@ -1,13 +1,16 @@
 {
-  "functions": {
-    "server/src/*.ts": {
-      "runtime": "nodejs24.x"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/server/src/(.*)",
-      "destination": "/server/src/$1"
-    }
-  ]
+ "version": 2,
+ "builds": [
+  {
+   "src": "server/src/server.ts",
+   "use": "@vercel/node",
+   "config": { "includeFiles": ["server/dist/**"] }
+  }
+ ],
+ "routes": [
+  {
+   "src": "server/(.*)",
+   "dest": "server/dist/server.js"
+  }
+ ]
 }
