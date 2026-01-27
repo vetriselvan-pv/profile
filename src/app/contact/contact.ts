@@ -1,5 +1,6 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ContactForm } from '../service/contact-form/contact-form';
 
 @Component({
   selector: 'app-contact', 
@@ -123,6 +124,8 @@ export class ContactComponent {
   phone = input.required<string>();
   location = input.required<string>();
 
+  contactFormService = inject(ContactForm);
+
   contactForm: FormGroup;
   isSubmitting = signal(false);
   statusMessage = signal('');
@@ -140,17 +143,21 @@ export class ContactComponent {
     if (this.contactForm.valid) {
       this.isSubmitting.set(true);
       this.statusMessage.set('');
-      
-      // Simulating API call
-      setTimeout(() => {
-        this.isSubmitting.set(false);
-        this.isSuccess.set(true);
-        this.statusMessage.set('Thank you! Your message has been sent successfully.');
-        this.contactForm.reset();
-        
-        // Clear message after 5 seconds
-        setTimeout(() => this.statusMessage.set(''), 5000);
-      }, 1500);
+
+      this.contactFormService.postContactForm(this.contactForm.value).subscribe({
+        next: (res) => {
+          this.isSubmitting.set(false);
+          this.isSuccess.set(true);
+          this.statusMessage.set('Thank you! Your message has been sent successfully.');
+          this.contactForm.reset();
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          this.isSuccess.set(false);
+          this.statusMessage.set('Something went wrong. Please try again later.');
+        }
+      });
+       
     }
   }
 }
