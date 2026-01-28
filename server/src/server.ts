@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { emailLimiter } from './middleware/rateLimiter.js';
-import { validateEmail } from './middleware/validate.js';
+import { emailLimiter } from './middleware/rateLimiter';
+import { validateEmail } from './middleware/validate';
 import { validationResult } from 'express-validator';
-import { transporter } from './mailer.js';
+import { transporter } from './mailer';
 import cors from 'cors';
 
 dotenv.config();

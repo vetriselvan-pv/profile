@@ -1,5 +1,4 @@
-import { rateLimit } from 'express-rate-limit';
-import RedisStore from "rate-limit-redis"; 
+import { rateLimit } from 'express-rate-limit'; 
 
 
 export const emailLimiter = rateLimit({
