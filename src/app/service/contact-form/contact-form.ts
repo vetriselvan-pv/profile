@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export class ContactForm  {
 
     private httpClient = inject(HttpClient);
-    private readonly url = 'http://localhost:3000/api/contact';
+    private readonly url = 'https://profile-two-sooty.vercel.app/api/contact';
     constructor() { }
     
     postContactForm(data: any): Observable<any>{
