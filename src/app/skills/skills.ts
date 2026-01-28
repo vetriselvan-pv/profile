@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, HostListener } from '@angular/core';
+import { SafesvgPipe } from '../pipes/safesvg/safesvg-pipe';
 
 @Component({
   selector: 'app-skills',
-  imports: [],
+  imports: [SafesvgPipe],
   template: `
     <section id="skills" class="animate-slide-up pb-20">
       <h3 class="text-2xl font-bold mb-12 flex items-center gap-4">
@@ -13,62 +14,304 @@ import { Component, signal } from '@angular/core';
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         @for (category of skills(); track category.category) {
           <div
-            class="glass-dark p-6 rounded-2xl border border-border-base hover:border-brand-secondary/30 transition-all duration-500"
+            class="glass-dark p-6 rounded-2xl border border-border-base hover:border-brand-secondary/30 transition-all duration-500 relative group"
+            (mouseenter)="hoveredCategory.set(category.category)"
+            (mouseleave)="hoveredCategory.set(null)"
           >
-            <h4 class="text-lg font-bold text-text-heading mb-6 flex items-center gap-2 transition-colors duration-500">
-              <span class="w-2 h-2 bg-brand-secondary rounded-full"></span>
-              {{ category.category }}
-            </h4>
-            <div class="flex flex-wrap gap-3">
-              @for (skill of category.items; track skill) {
-                <span
-                  class="px-4 py-2 glass rounded-xl text-sm text-text-muted hover:text-brand-secondary hover:bg-brand-secondary/10 transition-all duration-500 cursor-default group"
-                >
-                  {{ skill }}
-                </span>
-              }
+            <div class="relative z-10">
+              <h4
+                class="relative text-lg font-bold text-text-heading mb-6 flex items-center gap-2 transition-colors duration-500"
+              >
+                <span class="w-2 h-2 bg-brand-secondary rounded-full"></span>
+                {{ category.category }}
+              </h4>
+              <div class="flex flex-wrap gap-3">
+                @for (skill of category.items; track skill.name) {
+                  <div
+                    class="relative group/skill"
+                    (mouseenter)="hoveredSkill.set(skill.name)"
+                    (mouseleave)="hoveredSkill.set(null)"
+                    (click)="toggleActiveSkill($event, skill.name)"
+                  >
+                    <span
+                      class="px-4 py-2 glass rounded-xl text-sm text-text-muted transition-all duration-500 cursor-default flex items-center gap-0 overflow-hidden"
+                      [class.text-brand-secondary]="
+                        hoveredSkill() === skill.name || activeSkill() === skill.name
+                      "
+                      [class.bg-brand-secondary/10]="
+                        hoveredSkill() === skill.name || activeSkill() === skill.name
+                      "
+                    >
+                      <!-- Icon (Left) -->
+                      <div
+                        class="flex items-center justify-center overflow-hidden transition-all duration-500 h-5"
+                        [class.max-w-0]="
+                          hoveredSkill() !== skill.name && activeSkill() !== skill.name
+                        "
+                        [class.max-w-[30px]]="
+                          hoveredSkill() === skill.name || activeSkill() === skill.name
+                        "
+                        [class.opacity-0]="
+                          hoveredSkill() !== skill.name && activeSkill() !== skill.name
+                        "
+                        [class.opacity-100]="
+                          hoveredSkill() === skill.name || activeSkill() === skill.name
+                        "
+                        [class.mr-2]="hoveredSkill() === skill.name || activeSkill() === skill.name"
+                      >
+                        <div class="w-5 h-5 text-brand-secondary" [innerHTML]="skill.icon | safesvg"></div>
+                      </div>
+
+                      {{ skill.name }}
+
+                      <!-- Rating (Right) -->
+                      <div
+                        class="flex items-center overflow-hidden transition-all duration-500 h-3"
+                        [class.max-w-0]="
+                          hoveredSkill() !== skill.name && activeSkill() !== skill.name
+                        "
+                        [class.max-w-[80px]]="
+                          hoveredSkill() === skill.name || activeSkill() === skill.name
+                        "
+                        [class.opacity-0]="
+                          hoveredSkill() !== skill.name && activeSkill() !== skill.name
+                        "
+                        [class.opacity-100]="
+                          hoveredSkill() === skill.name || activeSkill() === skill.name
+                        "
+                        [class.ml-3]="hoveredSkill() === skill.name || activeSkill() === skill.name"
+                      >
+                        <div class="flex items-center gap-0.5">
+                          @for (star of [1, 2, 3, 4, 5]; track star) {
+                            <svg
+                              class="w-2.5 h-2.5 transition-colors duration-300"
+                              [class.text-brand-secondary]="star <= skill.rating"
+                              [class.text-text-muted/20]="star > skill.rating"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                              />
+                            </svg>
+                          }
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                }
+              </div>
             </div>
           </div>
         }
       </div>
     </section>
   `,
-  styles: ``,
+  styles: `
+    :host {
+      display: block;
+    }
+  `,
 })
 export class Skills {
+  protected readonly hoveredSkill = signal<string | null>(null);
+  protected readonly hoveredCategory = signal<string | null>(null);
+  protected readonly activeSkill = signal<string | null>(null);
+
+  protected toggleActiveSkill(event: Event, skillName: string) {
+    event.stopPropagation();
+    if (this.activeSkill() === skillName) {
+      this.activeSkill.set(null);
+    } else {
+      this.activeSkill.set(skillName);
+    }
+  }
+
+  @HostListener('document:click')
+  protected onDocumentClick() {
+    this.activeSkill.set(null);
+  }
+
   protected readonly skills = signal([
     {
       category: 'Language',
-      items: ['HTML', 'CSS', 'Markdown', 'JavaScript (ES6+)', 'TypeScript'],
+      items: [
+        {
+          name: 'HTML',
+          rating: 5,
+          icon: '<svg viewBox="-1 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>html [#124]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-61.000000, -7639.000000)" fill="currentColor"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M19.4350881,7485 L19.4279481,7485 L10.8119794,7485 L11.0180201,7487 L19.2300674,7487 C19.109707,7488.752 18.7455658,7492.464 18.6119454,7494.153 L13.99949,7495.451 L13.99949,7495.455 L13.98929,7495.46 L9.37377458,7493.836 L9.05757353,7490 L11.3199411,7490 L11.4800816,7492.063 L13.99337,7493 L13.99949,7493 L16.5086984,7492.1 L16.7667592,7489 L8.95659319,7489 C8.91885306,7488.599 8.43333144,7483.392 8.34867116,7483 L19.6370488,7483 C19.5738086,7483.66 19.5095484,7484.338 19.4350881,7485 L19.4350881,7485 Z M5,7479 L6.63812546,7497.148 L13.98929,7499 L21.3598345,7497.111 L23,7479 L5,7479 Z" id="html-[#124]"> </path> </g> </g> </g> </g></svg>',
+        },
+        {
+          name: 'CSS',
+          rating: 5,
+          icon: '<svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6 28L4 3H28L26 28L16 31L6 28Z" fill="currentColor"></path><path d="M26 5H16V29.5L24 27L26 5Z" fill="currentColor"></path><path d="M19.5 17.5H9.5L9 14L17 11.5H9L8.5 8.5H24L23.5 12L17 14.5H23L22 24L16 26L10 24L9.5 19H12.5L13 21.5L16 22.5L19 21.5L19.5 17.5Z" fill="white"></path></svg>',
+        },
+        {
+          name: 'Markdown',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 8C0 5.79086 1.79086 4 4 4H20C22.2091 4 24 5.79086 24 8V16C24 18.2091 22.2091 20 20 20H4C1.79086 20 0 18.2091 0 16V8ZM4 6C2.89543 6 2 6.89543 2 8V16C2 17.1046 2.89543 18 4 18H20C21.1046 18 22 17.1046 22 16V8C22 6.89543 21.1046 6 20 6H4ZM5.68377 8.05132C6.09211 7.9152 6.54174 8.05566 6.8 8.4L9 11.3333L11.2 8.4C11.4583 8.05566 11.9079 7.9152 12.3162 8.05132C12.7246 8.18743 13 8.56957 13 9V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V12L9.8 13.6C9.61115 13.8518 9.31476 14 9 14C8.68524 14 8.38885 13.8518 8.2 13.6L7 12V15C7 15.5523 6.55228 16 6 16C5.44772 16 5 15.5523 5 15V9C5 8.56957 5.27543 8.18743 5.68377 8.05132ZM18 9C18 8.44772 17.5523 8 17 8C16.4477 8 16 8.44772 16 9V12.5858L15.7071 12.2929C15.3166 11.9024 14.6834 11.9024 14.2929 12.2929C13.9024 12.6834 13.9024 13.3166 14.2929 13.7071L16.2929 15.7071C16.6834 16.0976 17.3166 16.0976 17.7071 15.7071L19.7071 13.7071C20.0976 13.3166 20.0976 12.6834 19.7071 12.2929C19.3166 11.9024 18.6834 11.9024 18.2929 12.2929L18 12.5858V9Z" fill="currentColor"></path></svg>',
+        },
+        {
+          name: 'JavaScript (ES6+)',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd"> <rect width="24" height="24" fill="currentColor"></rect> <path stroke="white" stroke-width="2" d="M12,11 C12,15.749205 12,18.4158717 12,19 C12,19.8761925 11.4771235,21 10,21 C7.61461794,21 7.5,19 7.5,19 M20.7899648,13.51604 C20.1898831,12.5053467 19.3944074,12 18.4035378,12 C16.8563489,12 16,13 16,14 C16,15 16.5,16 18.5084196,16.5 C19.7864643,16.8181718 21,17.5 21,19 C21,20.5 19.6845401,21 18.5,21 C16.9861609,21 15.9861609,20.3333333 15.5,19"></path> </g> </g></svg>',
+        },
+        {
+          name: 'TypeScript',
+          rating: 4,
+          icon: '<svg viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5H5V20H20V5ZM11.0769 18H9.82349V13.0444H8.02637V12.011H12.874V13.0444H11.0769V18ZM18.2893 16.2153C18.2893 17.4023 17.3679 18.1536 15.8738 18.1536C14.4419 18.1536 13.5371 17.4688 13.4666 16.4062L13.4624 16.3398H14.6702L14.6743 16.3813C14.72 16.8296 15.2056 17.1326 15.907 17.1326C16.5752 17.1326 17.0359 16.813 17.0359 16.3523V16.3481C17.0359 15.9539 16.7412 15.7339 15.9983 15.5803L15.3674 15.4517C14.1223 15.1985 13.5869 14.6174 13.5869 13.7085V13.7043C13.5869 12.592 14.5415 11.8574 15.8696 11.8574C17.2683 11.8574 18.0901 12.5962 18.1689 13.5964L18.1731 13.6504H16.9944L16.9861 13.6006C16.9155 13.1731 16.5005 12.8743 15.8696 12.8743C15.2512 12.8784 14.8403 13.1606 14.8403 13.6089V13.613C14.8403 14.0032 15.1309 14.2356 15.8364 14.3809L16.4714 14.5095C17.7373 14.771 18.2893 15.2773 18.2893 16.2112V16.2153Z" fill="currentColor"></path> </g></svg>',
+        },
+      ],
     },
     {
       category: 'Framework',
-      items: ['Angular', 'Next.js', 'Node.js', 'Express js', 'Ionic capacitor'],
+      items: [
+        {
+          name: 'Angular',
+          rating: 5,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l8.84,3.15L19.5,17.35,12,21.5,4.5,17.35,3.16,5.65,12,2.5m0,2.1L6.47,17H8.53l1.11-2.78h4.7L15.45,17H17.5L12,4.6m1.62,7.9H10.39L12,8.63Z"></path></svg>',
+        },
+        {
+          name: 'Next.js',
+          rating: 3,
+          icon: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M11.2141 0.00645944C11.1625 0.0111515 10.9982 0.0275738 10.8504 0.039304C7.44164 0.346635 4.24868 2.18593 2.22639 5.01291C1.10029 6.58476 0.380059 8.36775 0.107918 10.2563C0.0117302 10.9156 0 11.1103 0 12.0041C0 12.898 0.0117302 13.0927 0.107918 13.7519C0.760117 18.2587 3.96716 22.0452 8.31672 23.4481C9.0956 23.6991 9.91672 23.8704 10.8504 23.9736C11.2141 24.0135 12.7859 24.0135 13.1496 23.9736C14.7613 23.7953 16.1267 23.3965 17.4733 22.7091C17.6798 22.6035 17.7196 22.5754 17.6915 22.5519C17.6727 22.5378 16.793 21.3578 15.7372 19.9314L13.8182 17.339L11.4135 13.7801C10.0903 11.8235 9.00176 10.2235 8.99238 10.2235C8.98299 10.2211 8.97361 11.8024 8.96891 13.7331C8.96188 17.1138 8.95953 17.2499 8.9173 17.3296C8.85631 17.4446 8.80938 17.4915 8.71085 17.5431C8.63578 17.5807 8.57009 17.5877 8.21584 17.5877H7.80997L7.70205 17.5197C7.63167 17.4751 7.58006 17.4164 7.54487 17.3484L7.4956 17.2428L7.50029 12.539L7.50733 7.83285L7.58006 7.74136C7.6176 7.69209 7.69736 7.62875 7.75367 7.59825C7.84985 7.55133 7.88739 7.54664 8.29325 7.54664C8.77185 7.54664 8.85161 7.5654 8.97595 7.70147C9.01114 7.73901 10.3132 9.7003 11.871 12.0628C13.4287 14.4252 15.5589 17.651 16.6053 19.2346L18.5056 22.1132L18.6018 22.0499C19.4534 21.4962 20.3543 20.7079 21.0674 19.8868C22.5853 18.1437 23.5636 16.0182 23.8921 13.7519C23.9883 13.0927 24 12.898 24 12.0041C24 11.1103 23.9883 10.9156 23.8921 10.2563C23.2399 5.74957 20.0328 1.96306 15.6833 0.560125C14.9161 0.311445 14.0997 0.140184 13.1848 0.036958C12.9595 0.0134976 11.4088 -0.0123089 11.2141 0.00645944ZM16.1267 7.26511C16.2393 7.32142 16.3308 7.42933 16.3636 7.54194C16.3824 7.60294 16.3871 8.90734 16.3824 11.8469L16.3754 16.0651L15.6317 14.9249L14.8856 13.7848V10.7185C14.8856 8.73608 14.895 7.62171 14.9091 7.56775C14.9466 7.43637 15.0287 7.33315 15.1413 7.27215C15.2375 7.22288 15.2727 7.21819 15.6411 7.21819C15.9883 7.21819 16.0493 7.22288 16.1267 7.26511Z" fill="currentColor"></path> </g> <defs> <clipPath id="clip0"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>',
+        },
+        {
+          name: 'Node.js',
+          rating: 4,
+          icon: '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.1725 2.29872C16.4627 1.89953 15.5373 1.90132 14.8269 2.29872C11.2689 4.26227 7.71082 6.22641 4.15216 8.18906C3.45969 8.55335 2.99264 9.29698 3.00009 10.0688V21.9328C2.99509 22.7197 3.48622 23.4705 4.19655 23.8298C5.21871 24.3736 6.2118 24.9726 7.25244 25.4802C8.45451 26.0709 9.95843 26.2015 11.1752 25.5855C12.1629 25.075 12.6016 23.9395 12.6003 22.896C12.6083 18.9806 12.6016 15.0651 12.6034 11.1496C12.6269 10.9756 12.4962 10.7896 12.3064 10.7938C11.8517 10.7866 11.3964 10.7896 10.9417 10.7926C10.7699 10.7764 10.6022 10.9191 10.6152 11.0918C10.6091 14.982 10.6164 18.8734 10.6115 22.7642C10.6214 23.3024 10.2578 23.8196 9.73913 24.0014C8.5412 24.4213 5.12198 22.2012 5.12198 22.2012C4.9965 22.1431 4.91682 22.007 4.92912 21.8718C4.92912 17.9576 4.92973 14.0433 4.92912 10.1297C4.91187 9.97191 5.00912 9.8298 5.15402 9.76538C8.70033 7.8134 12.2448 5.85654 15.7911 3.90336C15.9143 3.82115 16.086 3.8214 16.2089 3.90396C19.7552 5.85654 23.3003 7.81161 26.8472 9.76368C26.9926 9.828 27.0857 9.9725 27.0709 10.1297C27.0703 14.0433 27.0721 17.9576 27.0697 21.8713C27.0802 22.0098 27.0086 22.144 26.8793 22.2048C23.3661 24.1462 19.8129 26.025 16.3315 28.0228C16.1796 28.1099 16.0075 28.2086 15.8373 28.1126C14.9218 27.6062 14.0174 27.0801 13.1049 26.5688C13.0057 26.5069 12.8794 26.4803 12.7759 26.5496C12.3668 26.7652 11.982 26.9398 11.5122 27.1258C10.8524 27.387 10.9578 27.4938 11.5529 27.8405C12.62 28.4444 13.6889 29.0459 14.756 29.6504C15.4585 30.0888 16.4024 30.12 17.1275 29.7149C20.6861 27.7538 24.2436 25.7904 27.8029 23.8293C28.5113 23.468 29.0049 22.7202 28.9999 21.9327V10.0688C29.0068 9.31264 28.5576 8.58227 27.886 8.21259C24.3156 6.23947 20.7435 4.27064 17.1725 2.29872Z" fill="currentcolor"></path> <path d="M22.5419 11.2062C21.1452 10.459 19.4836 10.4192 17.9315 10.5169C16.8102 10.6277 15.6309 10.9371 14.814 11.7409C13.9761 12.5489 13.7937 13.8537 14.1917 14.9085C14.4769 15.6539 15.1948 16.1386 15.9372 16.395C16.8935 16.7326 17.8979 16.837 18.9026 16.9414C19.819 17.0366 20.7357 17.1319 21.6165 17.4042C21.9763 17.5234 22.3953 17.7058 22.5055 18.0973C22.6073 18.5609 22.4957 19.0998 22.1193 19.4219C20.9237 20.3682 17.5979 20.2232 16.4166 19.4784C15.939 19.1611 15.7332 18.5994 15.6495 18.0641C15.6402 17.8973 15.5059 17.7443 15.3248 17.757C14.8713 17.7516 14.4178 17.7528 13.9643 17.7564C13.8061 17.7431 13.6416 17.8557 13.6329 18.0172C13.5397 20.4689 15.7914 21.5377 17.9039 21.773C19.1108 21.888 20.3442 21.8814 21.5327 21.6224C22.4261 21.419 23.3219 21.0444 23.9369 20.3563C24.6953 19.52 24.8444 18.2749 24.5043 17.2332C24.2443 16.4559 23.5012 15.9573 22.7416 15.7008C21.7086 15.3466 20.4844 15.1562 19.5488 15.0671C18.1889 14.9376 16.5729 14.9905 16.188 14.0969C16.0345 13.629 16.1651 13.048 16.5951 12.7602C17.7328 11.9885 20.0483 12.091 21.2265 12.6675C21.7675 12.9384 22.081 13.4948 22.2104 14.0565C22.2344 14.2215 22.3454 14.3937 22.5364 14.3865C22.9868 14.3955 23.4372 14.3889 23.8875 14.3895C24.0422 14.4003 24.2116 14.313 24.2418 14.1546C24.2227 12.9806 23.6232 11.7788 22.5419 11.2062Z" fill="currentcolor"></path> </g></svg>',
+        },
+        {
+          name: 'Express js',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 15v-6h4v1h-3v1h2v1h-2v2h3v1h-4zm5-6h1l1 2 1-2h1l-1.5 3 1.5 3h-1l-1-2-1 2h-1l1.5-3-1.5-3zm6 0h3v1h-2v1h1v1h-1v1h2v1h-3v-5z"/></svg>',
+        },
+        {
+          name: 'Ionic capacitor',
+          rating: 4,
+          icon: '<svg viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M128.151659,0.00118559798 C148.92891,0.00118559798 168.492891,4.85546114 186.843602,14.2583047 L186.843602,14.2583047 L189.270142,15.4715749 L187.146919,17.1398213 C181.990521,21.2346081 177.895735,26.5426649 175.317536,32.6090156 L175.317536,32.6090156 L174.559242,34.2772621 L173.042654,33.5189682 C158.938389,26.8459825 143.924171,23.3578308 128.303318,23.3578308 C70.521327,23.3578308 23.6587678,70.3720488 23.6587678,128.002381 C23.6587678,185.632712 70.3696682,232.64693 128.151659,232.64693 C185.933649,232.64693 232.796209,185.632712 232.796209,128.002381 C232.796209,114.201433 230.218009,100.703802 224.758294,87.9644659 L224.758294,87.9644659 L224,86.2962194 L225.668246,85.5379256 C231.886256,83.2630441 237.345972,79.4715749 241.744076,74.6184943 L241.744076,74.6184943 L243.412322,72.4952716 L244.473934,74.9218119 C252.208531,91.7559351 256,109.65167 256,127.699063 C256,198.22039 198.521327,255.699063 128,255.699063 C57.478673,255.699063 0,198.22039 0,127.699063 C0,57.177736 57.478673,-0.300936964 128.151659,0.00118559798 Z M128.151659,69.7654137 C160.151659,69.7654137 186.388626,95.8507218 186.540284,128.154039 C186.540284,160.457357 160.454976,186.542665 128.151659,186.542665 C95.8483412,186.542665 69.7630332,160.457357 69.7630332,128.154039 C69.7630332,95.8507218 96,69.7654137 128.151659,69.7654137 Z M211.71564,21.5379256 C226.457193,21.5379256 238.407583,33.4883156 238.407583,48.2298687 C238.407583,62.9714219 226.457193,74.9218119 211.71564,74.9218119 C196.974087,74.9218119 185.023697,62.9714219 185.023697,48.2298687 C185.023697,33.4883156 196.974087,21.5379256 211.71564,21.5379256 Z" fill="currentcolor"> </path> </g> </g></svg>',
+        },
+      ],
     },
     {
       category: 'Architecture',
       items: [
-        'Nx Workspace',
-        'Micro-frontends (Angular Module Federation)',
-        'Micro-frontends (Angular Native Federation)',
-        'Angular Monorepo',
+        {
+          name: 'Nx Workspace',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12l-12-12-12 12 12 12 12-12zm-12 8l-8-8 8-8 8 8-8 8z"/></svg>',
+        },
+        {
+          name: 'Micro-frontends (Angular Native Federation, Module Federation)',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg>',
+        },
+        {
+          name: 'Angular Monorepo',
+          rating: 5,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l8.84,3.15L19.5,17.35,12,21.5,4.5,17.35,3.16,5.65,12,2.5m0,2.1L6.47,17H8.53l1.11-2.78h4.7L15.45,17H17.5L12,4.6m1.62,7.9H10.39L12,8.63Z"></path></svg>',
+        },
       ],
     },
     {
       category: 'Library',
-      items: ['React', 'RxJS', 'NGXS', 'Angular Material', 'Tailwind CSS', 'Prisma'],
+      items: [
+        {
+          name: 'React',
+          rating: 3,
+          icon: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentcolor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>react</title> <rect width="24" height="24" fill="none"></rect> <path d="M12,10.11A1.87,1.87,0,1,1,10.13,12,1.88,1.88,0,0,1,12,10.11M7.37,20c.63.38,2-.2,3.6-1.7a24.22,24.22,0,0,1-1.51-1.9A22.7,22.7,0,0,1,7.06,16c-.51,2.14-.32,3.61.31,4m.71-5.74-.29-.51a7.91,7.91,0,0,0-.29.86c.27.06.57.11.88.16l-.3-.51m6.54-.76.81-1.5-.81-1.5c-.3-.53-.62-1-.91-1.47C13.17,9,12.6,9,12,9s-1.17,0-1.71,0c-.29.47-.61.94-.91,1.47L8.57,12l.81,1.5c.3.53.62,1,.91,1.47.54,0,1.11,0,1.71,0s1.17,0,1.71,0c.29-.47.61-.94.91-1.47M12,6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0,10.44c.19-.22.39-.45.59-.72H11.41c.2.27.4.5.59.72M16.62,4c-.62-.38-2,.2-3.59,1.7a24.22,24.22,0,0,1,1.51,1.9,22.7,22.7,0,0,1,2.4.36c.51-2.14.32-3.61-.32-4m-.7,5.74.29.51a7.91,7.91,0,0,0,.29-.86c-.27-.06-.57-.11-.88-.16l.3.51m1.45-7c1.47.84,1.63,3.05,1,5.63,2.54.75,4.37,2,4.37,3.68s-1.83,2.93-4.37,3.68c.62,2.58.46,4.79-1,5.63s-3.45-.12-5.37-1.95c-1.92,1.83-3.91,2.79-5.38,1.95s-1.62-3-1-5.63c-2.54-.75-4.37-2-4.37-3.68S3.08,9.07,5.62,8.32c-.62-2.58-.46-4.79,1-5.63s3.46.12,5.38,1.95c1.92-1.83,3.91-2.79,5.37-1.95M17.08,12A22.51,22.51,0,0,1,18,14.26c2.1-.63,3.28-1.53,3.28-2.26S20.07,10.37,18,9.74A22.51,22.51,0,0,1,17.08,12M6.92,12A22.51,22.51,0,0,1,6,9.74c-2.1.63-3.28,1.53-3.28,2.26S3.93,13.63,6,14.26A22.51,22.51,0,0,1,6.92,12m9,2.26-.3.51c.31,0,.61-.1.88-.16a7.91,7.91,0,0,0-.29-.86l-.29.51M13,18.3c1.59,1.5,3,2.08,3.59,1.7s.83-1.82.32-4a22.7,22.7,0,0,1-2.4.36A24.22,24.22,0,0,1,13,18.3M8.08,9.74l.3-.51c-.31,0-.61.1-.88.16a7.91,7.91,0,0,0,.29.86l.29-.51M11,5.7C9.38,4.2,8,3.62,7.37,4s-.82,1.82-.31,4a22.7,22.7,0,0,1,2.4-.36A24.22,24.22,0,0,1,11,5.7Z"></path> </g></svg>',
+        },
+        {
+          name: 'RxJS',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
+        },
+        {
+          name: 'NGXS',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
+        },
+        {
+          name: 'Angular Material',
+          rating: 5,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l8.84,3.15L19.5,17.35,12,21.5,4.5,17.35,3.16,5.65,12,2.5m0,2.1L6.47,17H8.53l1.11-2.78h4.7L15.45,17H17.5L12,4.6m1.62,7.9H10.39L12,8.63Z"></path></svg>',
+        },
+        {
+          name: 'Tailwind CSS',
+          rating: 5,
+          icon: '<svg fill="currentcolor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path></g></svg>',
+        },
+        {
+          name: 'Prisma',
+          rating: 3,
+          icon: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="currentcolor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>file_type_light_prisma</title><path d="M25.21,24.21,12.739,27.928a.525.525,0,0,1-.667-.606L16.528,5.811a.43.43,0,0,1,.809-.094l8.249,17.661A.6.6,0,0,1,25.21,24.21Zm2.139-.878L17.8,2.883h0A1.531,1.531,0,0,0,16.491,2a1.513,1.513,0,0,0-1.4.729L4.736,19.648a1.592,1.592,0,0,0,.018,1.7l5.064,7.909a1.628,1.628,0,0,0,1.83.678l14.7-4.383a1.6,1.6,0,0,0,1-2.218Z" style="fill:currentcolor;fill-rule:evenodd"></path></g></svg>',
+        },
+      ],
     },
     {
       category: 'IDE',
-      items: ['VS Code', 'Cursor', 'Antigravity', 'Android Studio', 'GitHub Desktop'],
+      items: [
+        {
+          name: 'VS Code',
+          rating: 5,
+          icon: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>file_type_vscode</title><path d="M29.01,5.03,23.244,2.254a1.742,1.742,0,0,0-1.989.338L2.38,19.8A1.166,1.166,0,0,0,2.3,21.447c.025.027.05.053.077.077l1.541,1.4a1.165,1.165,0,0,0,1.489.066L28.142,5.75A1.158,1.158,0,0,1,30,6.672V6.605A1.748,1.748,0,0,0,29.01,5.03Z" style="fill:#0065a9"></path><path d="M29.01,26.97l-5.766,2.777a1.745,1.745,0,0,1-1.989-.338L2.38,12.2A1.166,1.166,0,0,1,2.3,10.553c.025-.027.05-.053.077-.077l1.541-1.4A1.165,1.165,0,0,1,5.41,9.01L28.142,26.25A1.158,1.158,0,0,0,30,25.328V25.4A1.749,1.749,0,0,1,29.01,26.97Z" style="fill:#007acc"></path><path d="M23.244,29.747a1.745,1.745,0,0,1-1.989-.338A1.025,1.025,0,0,0,23,28.684V3.316a1.024,1.024,0,0,0-1.749-.724,1.744,1.744,0,0,1,1.989-.339l5.765,2.772A1.748,1.748,0,0,1,30,6.6V25.4a1.748,1.748,0,0,1-.991,1.576Z" style="fill:currentcolor"></path></g></svg>',
+        },
+        {
+          name: 'Cursor',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .327 8.742L3.64 12 .327 15.258a1 1 0 0 0 0 1.481l1.322 1.303a1 1 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352z"/></svg>',
+        },
+        {
+          name: 'Antigravity',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .327 8.742L3.64 12 .327 15.258a1 1 0 0 0 0 1.481l1.322 1.303a1 1 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352z"/></svg>',
+        },
+        {
+          name: 'Android Studio',
+          rating: 3,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .327 8.742L3.64 12 .327 15.258a1 1 0 0 0 0 1.481l1.322 1.303a1 1 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352z"/></svg>',
+        },
+        {
+          name: 'GitHub Desktop',
+          rating: 5,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.341-3.369-1.341-.454-1.152-1.11-1.459-1.11-1.459-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.92.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>',
+        },
+      ],
     },
     {
       category: 'Database',
-      items: ['MongoDB', 'PostgreSQL'],
+      items: [
+        {
+          name: 'MongoDB',
+          rating: 3,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-5.52 0-10-2.02-10-4.5v3c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-3c0 2.48-4.48 4.5-10 4.5zM12 21c-5.52 0-10-2.02-10-4.5v3c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-3c0 2.48-4.48 4.5-10 4.5z"/></svg>',
+        },
+        {
+          name: 'PostgreSQL',
+          rating: 3,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-5.52 0-10-2.02-10-4.5v3c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-3c0 2.48-4.48 4.5-10 4.5zM12 21c-5.52 0-10-2.02-10-4.5v3c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-3c0 2.48-4.48 4.5-10 4.5z"/></svg>',
+        },
+      ],
     },
     {
       category: 'Version Control',
-      items: ['Git', 'GitHub', 'GitLab'],
+      items: [
+        {
+          name: 'Git',
+          rating: 5,
+          icon: '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="currentcolor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.a{fill:none;stroke:currentcolor;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="a" d="M4.21,22.12a2.87,2.87,0,0,0,0,3.77L22.12,43.8a2.87,2.87,0,0,0,3.77,0l17.9-17.91a2.85,2.85,0,0,0,0-3.77L25.89,4.21A2.68,2.68,0,0,0,24,3.51h0a2.66,2.66,0,0,0-1.88.71Z"></path><line class="a" x1="26.33" y1="17.85" x2="30.15" y2="21.67"></line><line class="a" x1="17.4" y1="8.92" x2="21.67" y2="13.19"></line><circle class="a" cx="24" cy="32.41" r="3.3"></circle><circle class="a" cx="24" cy="15.52" r="3.3"></circle><circle class="a" cx="32.48" cy="24" r="3.3"></circle><line class="a" x1="24" y1="29.11" x2="24" y2="18.82"></line></g></svg>',
+        },
+        {
+          name: 'GitHub',
+          rating: 5,
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.341-3.369-1.341-.454-1.152-1.11-1.459-1.11-1.459-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.92.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>',
+        },
+        {
+          name: 'GitLab',
+          rating: 4,
+          icon: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4.7596 2.41255C5.21156 1.27671 6.83902 1.33597 7.20715 2.5017L8.94344 7.99997H15.0566L16.7929 2.5017C17.161 1.33598 18.7885 1.2767 19.2405 2.41255L21.7145 8.63025L22.6709 11.0338C22.9812 11.8135 22.7716 12.7041 22.1462 13.2637L12.6668 21.7452C12.2872 22.0849 11.7129 22.0849 11.3332 21.7452L1.85387 13.2637C1.22844 12.7041 1.0189 11.8135 1.32917 11.0338L2.28554 8.63025L4.7596 2.41255ZM14.425 9.99996H9.57502L12 17.6792L14.425 9.99996ZM9.94774 17.8219L7.47767 9.99996H3.89304L3.18746 11.7732L9.94774 17.8219ZM4.68885 7.99997H6.84609L5.89157 4.97733L4.68885 7.99997ZM14.0523 17.8219L16.5224 9.99996H20.107L20.8126 11.7732L14.0523 17.8219ZM19.3112 7.99997H17.154L18.1085 4.97733L19.3112 7.99997Z" fill="currentcolor"></path> </g></svg>',
+        },
+      ],
     },
   ]);
 }
