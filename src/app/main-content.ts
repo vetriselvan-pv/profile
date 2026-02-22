@@ -1,5 +1,5 @@
 import { Component, signal, AfterViewInit } from '@angular/core';
-import { ContactComponent } from './contact/contact';
+import { Contact } from './contact/contact';
 import { Experience } from './experience/experience';
 import { Skills } from './skills/skills';
 import { Awards } from "./awards/awards";
@@ -9,11 +9,12 @@ import { Testimonial } from './testimonial/testimonial';
 import { Projects } from './projects/projects';
 import { Blog } from './blog/blog';
 import { CommonModule } from '@angular/common';
+import { Contribution } from "./contribution/contribution";
 
 @Component({
   selector: 'app-main-content',
   standalone: true,
-  imports: [CommonModule, ContactComponent, Experience, Skills, Awards, Education, Home, Testimonial, Projects, Blog],
+  imports: [CommonModule, Contact, Experience, Skills, Awards, Education, Home, Testimonial, Blog, Contribution, Projects],
   template: `
     <div
       class="min-h-screen bg-bg-base text-text-base selection:bg-brand-primary selection:text-white transition-colors duration-500 overflow-x-hidden">
@@ -29,6 +30,7 @@ import { CommonModule } from '@angular/common';
         <app-experience />
         <app-projects />
         <app-skills />
+        <app-contribution />
         <app-blog />
         <app-testimonial />
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">

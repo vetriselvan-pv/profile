@@ -160,15 +160,34 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class Projects implements AfterViewInit, OnDestroy {
   protected readonly projects = signal([
+    // {
+    //   title: 'Portfolio',
+    //   description:
+    //     'I built this portfolio website from scratch to present my web development projects, technical expertise, and professional background in one place',
+    //   image:
+    //     './portfolio_landing.png',
+    //   tech: ['Angular', 'tailwindcss', 'gsap'],
+    //   link: 'https://vetriselvan-pv.github.io/profile/',
+    //   github: 'https://github.com/vetriselvan-pv/profile',
+    // },
     {
-      title: 'Portfolio',
+      title: 'Workspace Generator',
       description:
-        'I built this portfolio website from scratch to present my web development projects, technical expertise, and professional background in one place',
+        'A workspace generator application I built to scaffold project structures quickly and standardize development setup across new applications.',
       image:
-        './portfolio_landing.png',
-      tech: ['Angular', 'tailwindcss', 'gsap'],
-      link: 'https://vetriselvan-pv.github.io/profile/',
-      github: 'https://github.com/vetriselvan-pv/profile',
+        './workspace-generator-logo.svg',
+      tech: ['React', 'TypeScript', 'Node.js'],
+      link: 'https://github.com/vetriselvan-pv/workspace-generator',
+      github: 'https://github.com/vetriselvan-pv/workspace-generator/blob/main/PORTFOLIO_CASE_STUDY.md',
+    },
+    {
+      title: 'Warehouse Management for Coffee Vendor',
+      description:
+        'A mobile application built to efficiently manage warehouse operations, inventory, and logistics for a coffee vendor shop.',
+      image: './warehouse-app-placeholder.svg',
+      tech: ['Ionic', 'Angular', 'Capacitor'],
+      link: '#',
+      github: '#',
     },
   ]);
 

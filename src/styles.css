@@ -71,19 +71,22 @@
   animation: fadeIn 0.6s ease-out forwards;
 }
 
+
 .glass {
   background: var(--color-glass-bg);
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); Removed for performance */
   border: 1px solid var(--color-glass-border);
-  box-shadow: 0 8px 32px 0 var(--color-glass-shadow);
+  /* box-shadow: 0 8px 32px 0 var(--color-glass-shadow); Simplified shadow */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .glass-dark {
   background: var(--color-glass-bg);
   opacity: 0.9;
-  backdrop-filter: blur(12px);
+  /* backdrop-filter: blur(12px); Removed for performance */
   border: 1px solid var(--color-glass-border);
-  box-shadow: 0 8px 32px 0 var(--color-glass-shadow);
+  /* box-shadow: 0 8px 32px 0 var(--color-glass-shadow); Simplified shadow */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .text-gradient {

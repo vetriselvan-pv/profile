@@ -10,7 +10,7 @@ import gsap from 'gsap';
     <section id="testimonials" class="py-20 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden">
       <div class="mb-12">
         <h2 class="text-4xl font-bold mb-4 animate-slide-up">
-          What <span class="text-gradient">Clients Say</span>
+          What <span class="text-gradient">Colleague Says</span>
         </h2>
         <div class="w-20 h-1 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full"></div>
       </div>

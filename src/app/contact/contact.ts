@@ -119,7 +119,7 @@ import { ContactForm } from '../service/contact-form/contact-form';
     :host { display: block; }
   `]
 })
-export class ContactComponent {
+export class Contact {
   email = input.required<string>();
   phone = input.required<string>();
   location = input.required<string>();
