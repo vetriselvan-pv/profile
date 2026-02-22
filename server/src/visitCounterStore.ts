@@ -11,8 +11,19 @@ class VisitCounterStore {
   private queue: Promise<unknown> = Promise.resolve();
 
   constructor(filePath?: string) {
-    this.filePath =
-      filePath ?? process.env.VISIT_COUNTER_FILE ?? path.join(process.cwd(), 'data', 'visit-count.json');
+    this.filePath = filePath ?? this.getDefaultFilePath();
+  }
+
+  private getDefaultFilePath(): string {
+    if (process.env.VISIT_COUNTER_FILE) {
+      return process.env.VISIT_COUNTER_FILE;
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      return '/tmp/visit-count.json';
+    }
+
+    return path.join(process.cwd(), 'data', 'visit-count.json');
   }
 
   private async readData(): Promise<VisitCounterData> {
