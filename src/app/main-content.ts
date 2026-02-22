@@ -10,11 +10,12 @@ import { Projects } from './projects/projects';
 import { Blog } from './blog/blog';
 import { CommonModule } from '@angular/common';
 import { Contribution } from "./contribution/contribution";
+import { VisitCounterComponent } from './visit-counter/visit-counter';
 
 @Component({
   selector: 'app-main-content',
   standalone: true,
-  imports: [CommonModule, Contact, Experience, Skills, Awards, Education, Home, Testimonial, Blog, Contribution, Projects],
+  imports: [CommonModule, Contact, Experience, Skills, Awards, Education, Home, Testimonial, Blog, Contribution, Projects, VisitCounterComponent],
   template: `
     <div
       class="min-h-screen bg-bg-base text-text-base selection:bg-brand-primary selection:text-white transition-colors duration-500 overflow-x-hidden">
@@ -38,6 +39,7 @@ import { Contribution } from "./contribution/contribution";
           <app-education></app-education>
         </div>
         <app-contact [email]="contact().email" [phone]="contact().phone" [location]="contact().location" />
+        <app-visit-counter />
         <footer class="py-12 text-center text-sm text-text-muted animate-fade-in border-t border-border-base transition-colors duration-500">
           &copy; 2026 {{ name() }}. All rights reserved.
         </footer>

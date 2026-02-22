@@ -5,6 +5,7 @@ import { validateEmail } from './middleware/validate';
 import { validationResult } from 'express-validator';
 import { transporter } from './mailer';
 import cors from 'cors';
+import { visitCounterStore } from './visitCounterStore';
 
 dotenv.config();
 
@@ -18,6 +19,15 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello from Express on Vercel!');
+});
+
+app.get('/api/visits', async (_req: express.Request, res: express.Response) => {
+  try {
+    const result = await visitCounterStore.increment();
+    return res.status(200).json(result);
+  } catch (_error) {
+    return res.status(500).json({ message: 'Failed to track visit' });
+  }
 });
 
 app.post(
@@ -47,10 +57,10 @@ app.post(
   },
 );
 
-// const PORT = process.env.PORT || 3000;
-// if (process.env.NODE_ENV !== 'production') {
-//   app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-//   });
-// }
+const PORT = process.env.PORT || 3000;
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
  export default app;
