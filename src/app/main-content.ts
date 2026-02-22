@@ -19,6 +19,17 @@ import { VisitCounterComponent } from './visit-counter/visit-counter';
   template: `
     <div
       class="min-h-screen bg-bg-base text-text-base selection:bg-brand-primary selection:text-white transition-colors duration-500 overflow-x-hidden">
+      <div
+        class="fixed top-5 right-5 z-40 px-4 py-2 rounded-full border border-brand-primary/30 bg-brand-primary/10 backdrop-blur-sm text-brand-primary font-semibold text-xs md:text-sm tracking-wide shadow-lg animate-float"
+      >
+        <span class="inline-flex items-center gap-2">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75 animate-ping"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-primary"></span>
+          </span>
+          Open to Work
+        </span>
+      </div>
       <div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10">
         <div
           class="absolute top-[10%] left-[10%] w-120 h-120 bg-brand-primary/10 rounded-full blur-[120px] animate-pulse-slow">

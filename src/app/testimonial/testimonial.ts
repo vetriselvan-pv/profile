@@ -33,7 +33,12 @@ import gsap from 'gsap';
 
                   <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
                     <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-brand-primary/20 flex-shrink-0 shadow-2xl">
-                      <img [src]="item.image" [alt]="item.name" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                      <img
+                        [src]="item.image"
+                        [alt]="item.name"
+                        (error)="onImageError($event)"
+                        class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                      />
                     </div>
                     
                     <div class="flex-1 text-center md:text-left">
@@ -102,6 +107,7 @@ import gsap from 'gsap';
   ],
 })
 export class Testimonial implements  AfterViewInit, OnDestroy {
+  private readonly fallbackAvatar = './empty-avatar.svg';
   protected readonly testimonials = signal([
     {
       name: 'Manash Chakraborty',
@@ -212,6 +218,13 @@ As an Angular developer, he combines deep framework knowledge with strong produc
         duration: 0.8,
         ease: 'power3.out',
       });
+    }
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.src.endsWith('/empty-avatar.svg')) {
+      img.src = this.fallbackAvatar;
     }
   }
 }

@@ -24,13 +24,13 @@ gsap.registerPlugin(ScrollTrigger)
         @for (item of menuItems(); track item.id) {
           <button
             (click)="scrollToSection(item.id)"
-            class="p-4 glass-dark rounded-full shadow-lg border border-slate-200 hover:border-brand-primary/40 text-slate-500 hover:text-brand-primary transition-all duration-300 relative group"
-            [class.text-brand-primary]="activeSection() === item.id"
+            class="menu-item p-4 glass-dark rounded-full shadow-lg border border-slate-200 hover:border-brand-primary/40 text-slate-500 hover:text-brand-primary transition-all duration-300 relative group"
+            [class.menu-item-active]="activeSection() === item.id"
             [attr.aria-label]="'Scroll to ' + item.label"
           >
             <!-- Tooltip -->
             <span
-              class="absolute right-full mr-4 px-3 py-1.5 glass rounded-lg text-xs font-bold text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
+              class="absolute right-full mr-4 px-3 py-1.5 glass rounded-lg text-xs font-bold text-text-heading opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
             >
               {{ item.label }}
             </span>
@@ -205,7 +205,17 @@ gsap.registerPlugin(ScrollTrigger)
       </button>
     </nav>
   `,
-  styles: [],
+  styles: [
+    `
+      .menu-item-active {
+        color: var(--color-brand-primary);
+      }
+
+      :host-context(.dark) .menu-item-active {
+        color: var(--color-brand-accent);
+      }
+    `,
+  ],
 })
 export class FloatingMenu implements AfterViewInit, OnDestroy {
   menuItems = signal([

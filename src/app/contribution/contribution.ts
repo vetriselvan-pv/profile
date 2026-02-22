@@ -1,5 +1,5 @@
 
-import { Component, signal, AfterViewInit, ElementRef, viewChild, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, viewChild, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -28,14 +28,42 @@ gsap.registerPlugin(ScrollTrigger);
             <p class="text-text-muted mb-8 text-center max-w-2xl">
                 Check out my open source contributions on GitHub. I'm passionate about building and sharing with the community.
             </p>
-            
-            <a href="https://github.com/vetriselvan-pv" target="_blank" rel="noopener noreferrer" class="block w-full overflow-x-auto">
-                <img 
-                    src="https://ghchart.rshah.org/vetriselvan-pv" 
-                    alt="Vetriselvan's Github Chart" 
-                    class="w-full min-w-[800px] h-auto filter hover:brightness-110 transition-all duration-300"
-                />
-            </a>
+
+            <div class="w-full p-6 rounded-2xl border border-border-base bg-brand-primary/5 text-left">
+                <h3 class="text-2xl font-bold text-text-heading mb-4">
+                    GitHub Contribution
+                </h3>
+                <h3 class="text-lg font-bold text-text-heading mb-2">
+                    Repository: angular-skills
+                </h3>
+                <a
+                  href="https://github.com/analogjs/angular-skills"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center text-sm font-semibold text-brand-primary hover:underline mb-3"
+                >
+                  https://github.com/analogjs/angular-skills
+                </a>
+                <p class="text-text-muted leading-relaxed mb-3">
+                  A collection of skills for AI-assisted Angular development. These skills provide coding agents such as Claude, Gemini, OpenCode, etc with up-to-date Angular v20+ patterns, best practices, and code examples.
+                </p>
+                <p class="text-text-heading font-medium">
+                  Contribution: Angular Signal Forms - (FormValueControl)
+                </p>
+            </div>
+
+            <div class="w-full mt-8 p-6 rounded-2xl border border-border-base bg-bg-base text-left">
+                <h3 class="text-2xl font-bold text-text-heading mb-4">
+                    GitHub Activity
+                </h3>
+                <a href="https://github.com/vetriselvan-pv" target="_blank" rel="noopener noreferrer" class="block w-full overflow-x-auto">
+                    <img 
+                        src="https://ghchart.rshah.org/vetriselvan-pv" 
+                        alt="Vetriselvan's Github Chart" 
+                        class="w-full min-w-[800px] h-auto filter hover:brightness-110 transition-all duration-300"
+                    />
+                </a>
+            </div>
 
             <div class="mt-8">
                 <a href="https://github.com/vetriselvan-pv" target="_blank" class="px-6 py-3 rounded-full bg-brand-primary/10 text-brand-primary font-bold hover:bg-brand-primary hover:text-white transition-all duration-300 inline-flex items-center gap-2">
