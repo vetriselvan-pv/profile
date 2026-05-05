@@ -173,16 +173,15 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class Projects implements AfterViewInit, OnDestroy {
   protected readonly projects = signal([
-    // {
-    //   title: 'Portfolio',
-    //   description:
-    //     'I built this portfolio website from scratch to present my web development projects, technical expertise, and professional background in one place',
-    //   image:
-    //     './portfolio_landing.png',
-    //   tech: ['Angular', 'tailwindcss', 'gsap'],
-    //   link: 'https://vetriselvan-pv.github.io/profile/',
-    //   github: 'https://github.com/vetriselvan-pv/profile',
-    // },
+    {
+      title : 'D-POWER TESTING SERVICES PTE LTD',
+      description: 'D-POWER TESTING SERVICES PTE LTD is a company that provides testing services to the energy industry.',
+      image: './d-power-logo.png',
+      tech: ['React', 'Typescript'],
+      link: 'https://vetriselvan-pv.github.io/d-power-service/',
+      github: 'https://github.com/vetriselvan-pv/d-power-service',
+      visibility: 'Public',
+    },
     {
       title: 'Workspace Generator',
       description:
