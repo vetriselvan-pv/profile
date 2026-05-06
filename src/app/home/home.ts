@@ -120,7 +120,7 @@ import { Component, input, signal } from '@angular/core';
               </g>
             </svg>
           </a>
-          <a href="vetriselvan.pdf" target="_blank" class="px-8 py-4 rounded-full bg-brand-primary text-white font-bold hover:bg-brand-secondary transition-colors duration-300 inline-flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-1 transform">
+          <a href="Vetriselvan_Panneerselvam_Senior_FullStack_Engineer.pdf" target="_blank" class="px-8 py-4 rounded-full bg-brand-primary text-white font-bold hover:bg-brand-secondary transition-colors duration-300 inline-flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-1 transform">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download Resume
             </a>
