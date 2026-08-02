@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "git-build": "vite build --base-href /profile/",
+    "git-build": "vite build --base=/profile/",
     "git-deploy": "sudo npx angular-cli-ghpages --dir=dist"
   },
   "dependencies": {
