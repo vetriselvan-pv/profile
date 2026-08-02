@@ -90,7 +90,7 @@ export default function AboutSection({ onOpenTerminal }: AboutSectionProps) {
             <div className="relative overflow-hidden aspect-[4/5] bg-[#e5e1d8] border border-[#454339]">
               {bioData.imageUrl.endsWith('.mp4') ? (
                 <video
-                  src={bioData.imageUrl}
+                  src={`${import.meta.env.BASE_URL}${bioData.imageUrl.replace(/^[\.\/]*/, '')}`}
                   autoPlay
                   loop
                   muted
@@ -99,7 +99,7 @@ export default function AboutSection({ onOpenTerminal }: AboutSectionProps) {
                 />
               ) : (
                 <img
-                  src={bioData.imageUrl}
+                  src={`${import.meta.env.BASE_URL}${bioData.imageUrl.replace(/^[\.\/]*/, '')}`}
                   alt="Professional Portrait - Senior Full-Stack Architect"
                   className="w-full h-full object-cover filter contrast-105 group-hover:scale-105 transition-all duration-700"
                   referrerPolicy="no-referrer"
