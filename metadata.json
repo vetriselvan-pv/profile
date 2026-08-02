@@ -1,0 +1,6 @@
+{
+  "name": "Kinetic Syntax Portfolio",
+  "description": "Sophisticated engineering portfolio, capability matrix, architectural experiments, and proof of work.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
