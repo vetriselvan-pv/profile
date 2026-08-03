@@ -1,4 +1,4 @@
-import { recommendationsData } from "../data/portfolioData";
+import { recommendationsData } from "../../data/portfolioData";
 import { Quote, CheckCircle2 } from "lucide-react";
 
 export default function RecommendationsSection() {

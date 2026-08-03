@@ -1,4 +1,4 @@
-import { experienceData } from "../data/portfolioData";
+import { experienceData } from "../../data/portfolioData";
 import { ChevronRight, Calendar, MapPin } from "lucide-react";
 
 export default function ExperienceSection() {

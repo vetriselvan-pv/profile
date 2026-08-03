@@ -1,5 +1,5 @@
-import { Project } from "../types";
-import { projectsData } from "../data/portfolioData";
+import { Project } from "../../types";
+import { projectsData } from "../../data/portfolioData";
 import {
   Code2,
   ExternalLink,

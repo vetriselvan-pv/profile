@@ -9,7 +9,7 @@ import {
   projectsData,
   skillCategoriesData,
   bioData,
-} from "../data/portfolioData";
+} from "../../data/portfolioData";
 
 interface TerminalModalProps {
   isOpen: boolean;

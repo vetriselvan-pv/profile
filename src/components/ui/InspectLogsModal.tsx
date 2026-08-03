@@ -1,4 +1,4 @@
-import { Project } from '../types';
+import { Project } from "../../types";
 import { X, Activity, Terminal, Shield, ExternalLink, Cpu, HardDrive } from 'lucide-react';
 
 interface InspectLogsModalProps {

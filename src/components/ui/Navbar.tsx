@@ -67,7 +67,7 @@ export default function Navbar({
         }`}
       >
         {/* Left: Empty Spacer for balance */}
-        <div className="flex-1 hidden md:block"></div>
+        <div className={`hidden md:block ${!isScrolled ? 'flex-1' : ''}`}></div>
 
         {/* Center: Desktop Navigation Links (Modern Pill Group) */}
         <div className="hidden md:flex items-center p-1 bg-[#454339]/5 rounded-full border border-[#454339]/10">
@@ -90,7 +90,7 @@ export default function Navbar({
         </div>
 
         {/* Right: Action Controls */}
-        <div className="flex-1 flex justify-end items-center gap-2 lg:gap-3">
+        <div className={`flex justify-end items-center gap-2 lg:gap-3 ${!isScrolled ? 'flex-1' : ''}`}>
           {/* Terminal Trigger */}
           <button
             onClick={onOpenTerminal}

@@ -1,5 +1,5 @@
 import { useState, useRef, MouseEvent, useEffect } from 'react';
-import { bioData } from '../data/portfolioData';
+import { bioData } from '../../data/portfolioData';
 import { Edit3, Check, Copy, MapPin, Radio, Activity, Code2 } from 'lucide-react';
 
 interface AboutSectionProps {

@@ -1,4 +1,4 @@
-import { achievementsData, openSourceData } from '../data/portfolioData';
+import { achievementsData, openSourceData } from '../../data/portfolioData';
 import { Award, GitPullRequest, GitCommit, CheckCircle2, Terminal } from 'lucide-react';
 
 export default function ProofOfWorkSection() {

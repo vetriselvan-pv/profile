@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { BlogArticle } from "../types";
-import { blogArticles } from "../data/portfolioData";
+import { createPortal } from "react-dom";
+import { BlogArticle } from "../../types";
+import { blogArticles } from "../../data/portfolioData";
 import { X, Clock, ArrowRight, Loader2, ExternalLink } from "lucide-react";
 
 export default function BlogsSection() {
@@ -94,7 +95,7 @@ export default function BlogsSection() {
       </div>
 
       {/* Blog Detail Reading Modal */}
-      {selectedArticle && (
+      {selectedArticle && createPortal(
         <div className="fixed inset-0 z-50 bg-[#454339]/70 backdrop-blur-sm flex items-center justify-center p-4 lg:p-10 animate-in fade-in">
           <div className="bg-[#ffffff] border-2 border-[#454339] shadow-[10px_10px_0px_#454339] w-full max-w-3xl overflow-hidden flex flex-col max-h-[85vh]">
             {/* Modal Header */}
@@ -219,7 +220,8 @@ export default function BlogsSection() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );

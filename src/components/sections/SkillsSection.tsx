@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { skillCategoriesData } from '../data/portfolioData';
+import { skillCategoriesData } from '../../data/portfolioData';
 import { Cpu, Database, Cloud, Shield, Wrench, CheckCircle2, Globe, Server, Terminal } from 'lucide-react';
 
 export default function SkillsSection() {
