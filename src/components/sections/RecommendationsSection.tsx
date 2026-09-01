@@ -3,7 +3,10 @@ import { Quote, CheckCircle2 } from "lucide-react";
 
 export default function RecommendationsSection() {
   return (
-    <section id="recommendations" className="py-20 bg-[#ffffff] border-b-2 border-[#454339]">
+    <section
+      id="recommendations"
+      className="py-20 bg-[#ffffff] border-b-2 border-[#454339]"
+    >
       <div className="max-w-[1120px] mx-auto px-6 lg:px-10">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-4 border-b-2 border-[#454339] pb-6">
           <div>
@@ -22,8 +25,8 @@ export default function RecommendationsSection() {
         {/* Horizontal Scrolling Container */}
         <div className="flex overflow-x-auto gap-8 pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {recommendationsData.map((rec) => (
-            <div 
-              key={rec.id} 
+            <div
+              key={rec.id}
               className="w-[85vw] md:w-[600px] shrink-0 snap-center bg-[#f4f0e6] border-2 border-[#454339] shadow-[8px_8px_0px_#454339] p-8 flex flex-col justify-between"
             >
               <div>
@@ -32,13 +35,13 @@ export default function RecommendationsSection() {
                   "{rec.text}"
                 </p>
               </div>
-              
+
               <div className="border-t-2 border-[#454339] pt-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   {rec.image && (
-                    <img 
-                      src={rec.image} 
-                      alt={rec.name} 
+                    <img
+                      src={rec.image}
+                      alt={rec.name}
                       className="w-10 h-10 object-cover border border-[#454339] bg-[#ffffff] grayscale contrast-125"
                     />
                   )}
@@ -51,13 +54,16 @@ export default function RecommendationsSection() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col items-end">
                   <span className="font-sans text-[10px] uppercase tracking-[0.2em] font-bold text-[#454339]/60">
                     {rec.date}
                   </span>
                   <div className="flex items-center gap-1 mt-1 font-sans text-[10px] font-bold text-green-700 uppercase tracking-widest">
-                    <CheckCircle2 className="w-3 h-3" /> Linked<span className="font-serif italic font-normal normal-case">in</span>
+                    <CheckCircle2 className="w-3 h-3" /> Linked
+                    <span className="font-serif italic font-normal normal-case">
+                      in
+                    </span>
                   </div>
                 </div>
               </div>

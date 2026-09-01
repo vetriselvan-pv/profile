@@ -26,10 +26,30 @@ export const bioData: BioData = {
 
 export const projectsData: Project[] = [
   {
+    id: "vivaacademy",
+    title: "Viva Academy",
+    subtitle: "React, Node js, Fastify, MongoDB, Typescript, Tailwindcss",
+    type: "standard",
+    tags: [
+      "React",
+      "Typescript",
+      "Private",
+      "MongoDB",
+      "Node Js",
+      "Fastify",
+      "Tailwindcss",
+    ],
+    image: "./viva_academy.png",
+    description: "",
+    githubUrl: "https://github.com/vetriselvan-pv/d-power-service",
+    demoUrl: "https://dpowertestingservices.com.sg/",
+    metrics: [{ label: "VISIBILITY", value: "Public" }],
+  },
+  {
     id: "d-power",
     title: "D-POWER TESTING SERVICES",
     subtitle: "REACT & TYPESCRIPT",
-    type: "large",
+    type: "standard",
     tags: ["React", "Typescript", "Public"],
     image: "./dpowertestingservice.png",
     description:
@@ -48,30 +68,40 @@ export const projectsData: Project[] = [
     githubUrl: "https://github.com/vetriselvan-pv/career-application-ai-studio",
     demoUrl: "https://github.com/vetriselvan-pv/career-application-ai-studio",
     metrics: [{ label: "VISIBILITY", value: "Public" }],
-    type: "large",
+    type: "wide",
   },
-  {
-    id: "workspace-generator",
-    title: "Workspace Generator",
-    subtitle: "PROJECT SCAFFOLDING",
-    type: "tall",
-    tags: ["React", "TypeScript", "Node.js", "Public"],
-    image: "./workspace-generator-logo.svg",
-    description:
-      "A workspace generator application I built to scaffold project structures quickly and standardize development setup across new applications.",
-    githubUrl:
-      "https://github.com/vetriselvan-pv/workspace-generator/blob/main/PORTFOLIO_CASE_STUDY.md",
-    demoUrl: "https://github.com/vetriselvan-pv/workspace-generator",
-  },
+  // {
+  //   id: "workspace-generator",
+  //   title: "Workspace Generator",
+  //   subtitle: "PROJECT SCAFFOLDING",
+  //   type: "tall",
+  //   tags: ["React", "TypeScript", "Node.js", "Public"],
+  //   image: "./workspace-generator-logo.svg",
+  //   description:
+  //     "A workspace generator application I built to scaffold project structures quickly and standardize development setup across new applications.",
+  //   githubUrl:
+  //     "https://github.com/vetriselvan-pv/workspace-generator/blob/main/PORTFOLIO_CASE_STUDY.md",
+  //   demoUrl: "https://github.com/vetriselvan-pv/workspace-generator",
+  // },
   {
     id: "warehouse-management",
-    title: "Warehouse Management",
+    title: "Everyday Bevarage Management System",
     subtitle: "COFFEE VENDOR LOGISTICS",
     type: "wide",
     tags: ["Ionic", "Angular", "Capacitor", "Private"],
-    image: "./warehouse-app-placeholder.svg",
+    image: "./everyday-bevarage.png",
     description:
-      "A mobile application built to efficiently manage warehouse operations, inventory, and logistics for a coffee vendor shop.",
+      "A web and mobile application built to efficiently manage warehouse operations, inventory, and logistics for a coffee vendor shop.",
+    metrics: [{ label: "VISIBILITY", value: "Private" }],
+  },
+  {
+    id: "vetrivendhan-portfolio",
+    title: "Vetrivendhan Portfolio",
+    subtitle: "Portfolio - About vetrivendhan",
+    type: "standard",
+    tags: ["React", "Tailwindcss", "Private"],
+    image: "./vetrivendhan_portfolio.png",
+    description: "",
     metrics: [{ label: "VISIBILITY", value: "Private" }],
   },
 ];
@@ -208,7 +238,7 @@ export const blogArticles: BlogArticle[] = [
     title: "Published on Medium",
     summary:
       "Deep dives into Full Stack Development, performance optimization, scalable frontend architecture, and deployment best practices.",
-    tags: ["#MEAN", "#MERN", "#JAVA", "#CI/CD"],
+    tags: ["#MEAN", "#MERN", "#CI/CD"],
     readTime: "Various",
     content: `
 ### Medium Publication
@@ -223,7 +253,7 @@ Read my full collection of engineering essays directly on my Medium profile: [me
     title: "Writing on Dev.to",
     summary:
       "Sharing technical insights, tutorials, and best practices with the broader developer community on Dev.to.",
-    tags: ["#MEAN", "#MERN", "#JAVA", "#CI/CD"],
+    tags: ["#MEAN", "#MERN", "#CI/CD"],
     readTime: "Various",
     content: `
 ### Dev.to Articles
@@ -303,12 +333,40 @@ export const skillCategoriesData: SkillCategory[] = [
     items: [
       { name: "Node.js" },
       { name: "Express.js" },
-      { name: "Java" },
-      { name: "Spring Boot" },
-      { name: "REST APIs" },
-      { name: "PostgreSQL" },
-      { name: "MongoDB" },
+      { name: "Fastify" },
+      { name: "Zod" },
+      { name: "Swagger" },
+      { name: "JWT" },
+      { name: "Helmet" },
     ],
+  },
+  {
+    title: "DATABASES & CACHING",
+    file: "database.db",
+    icon: "database",
+    type: "tags",
+    items: [{ name: "MongoDB" }, { name: "Mongoose" }, { name: "Redis" }],
+  },
+  {
+    title: "ARCHITECTURE",
+    file: "architecture.env",
+    icon: "construction",
+    type: "tags",
+    items: [
+      { name: "Nx Monorepo" },
+      { name: "Micro Frontends" },
+      { name: "Module Federation" },
+      { name: "Native Federation" },
+      { name: "Angular Monorepo" },
+      { name: "Microservices" },
+    ],
+  },
+  {
+    title: "Testing",
+    file: "testing.txt",
+    icon: "construction",
+    type: "tags",
+    items: [{ name: "Vitest" }, { name: "Jest" }],
   },
   {
     title: "VERSION_CONTROL_&_CLOUD_&_DEVOPS",
@@ -324,20 +382,6 @@ export const skillCategoriesData: SkillCategory[] = [
       { name: "GitHub Actions" },
       { name: "Jenkins" },
       { name: "Nginx" },
-    ],
-  },
-  {
-    title: "ARCHITECTURE",
-    file: "architecture.env",
-    icon: "construction",
-    type: "tags",
-    items: [
-      { name: "Nx Monorepo" },
-      { name: "Micro Frontends" },
-      { name: "Module Federation" },
-      { name: "Native Federation" },
-      { name: "Angular Architecture" },
-      { name: "Microservices" },
     ],
   },
 ];

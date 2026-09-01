@@ -27,23 +27,26 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="mt-20 pt-20 pb-16 border-t-2 border-[#454339] bg-[#f4f0e6]"
+      className=" pt-20 pb-16 border-[#454339] bg-[#f4f0e6]"
     >
       <div className="max-w-[1120px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
+        {/* Section Header */}
+        <div className="mb-14 border-b-2 border-[#454339] pb-6">
+          <span className="font-sans text-[11px] font-bold text-[#454339] uppercase block mb-2 tracking-[0.2em]">
+            PLATE 06 // TRANSMISSION & INQUIRIES
+          </span>
+          <h2 className="font-serif text-4xl lg:text-5xl font-black text-[#454339] mb-3">
+            Initialize Communication
+          </h2>
+          <p className="font-serif italic text-base text-[#454339]/80 max-w-2xl leading-relaxed">
+            Interested in high-concurrency systems engineering or complex
+            software architecture? Send a direct dispatch.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Column: Direct Signal Info */}
           <div>
-            <span className="font-sans text-[11px] font-bold text-[#454339] uppercase block mb-2 tracking-[0.2em]">
-              PLATE 05 // TRANSMISSION & INQUIRIES
-            </span>
-            <h2 className="font-serif text-4xl lg:text-5xl font-black text-[#454339] mb-4">
-              Initialize Communication
-            </h2>
-            <p className="font-serif italic text-base text-[#454339]/80 mb-8 leading-relaxed">
-              Interested in high-concurrency systems engineering or complex
-              software architecture? Send a direct dispatch.
-            </p>
-
             <div className="space-y-6">
               {/* Email Direct Trigger */}
               <a

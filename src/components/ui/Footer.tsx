@@ -1,11 +1,11 @@
-import { Github, Linkedin, PenTool } from 'lucide-react';
+import { Github, Linkedin, PenTool } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#fdfcf8] border-t-2 border-[#454339] w-full py-10">
-      <div className="flex flex-col md:flex-row justify-between items-center px-6 lg:px-10 max-w-[1120px] mx-auto gap-4">
+    <footer className="bg-[#fdfcf8] border-t-2 border-[#454339] w-full py-8">
+      <div className="flex flex-col md:flex-row justify-between items-center px-6 lg:px-6 max-w-[1200px] mx-auto gap-4">
         <div className="font-sans text-xs text-[#454339] font-black uppercase tracking-[0.25em]">
-          VETRI_SELVAN // ENGINEER
+          VETRISELVAN_PANNEERSELVAM // ENGINEER
         </div>
 
         <p className="font-serif italic text-sm text-[#454339]/80 text-center">

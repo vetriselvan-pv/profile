@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Menu, X, Terminal, FileText } from 'lucide-react';
+import { useState, useEffect, useRef } from "react";
+import { Menu, X, Terminal, FileText } from "lucide-react";
+import { label } from "motion/react-client";
 
 interface NavbarProps {
   activeSection: string;
@@ -21,17 +22,41 @@ export default function Navbar({
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navRef = useRef<HTMLDivElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+  // Update sliding indicator position whenever activeSection changes
+  useEffect(() => {
+    if (navRef.current) {
+      const activeElement = navRef.current.querySelector(
+        '[data-active="true"]',
+      ) as HTMLElement;
+      if (activeElement) {
+        setIndicatorStyle({
+          left: activeElement.offsetLeft,
+          width: activeElement.offsetWidth,
+          opacity: 1,
+        });
+      }
+    }
+  }, [activeSection, isScrolled]);
+
   const navItems = [
-    { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'blogs', label: 'Blogs' },
-    { id: 'contact', label: 'Contact' },
+    { id: "about", label: "About" },
+    { id: "skills", label: "Skills" },
+    { id: "experience", label: "Experience" },
+    { id: "projects", label: "Projects" },
+    { id: "blogs", label: "Blogs" },
+    { id: "milestones", label: "Milestones" },
+    { id: "contact", label: "Contact" },
   ];
 
   const scrollToSection = (id: string) => {
@@ -46,41 +71,50 @@ export default function Navbar({
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
 
   return (
     <nav
-      className={`fixed z-40 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex justify-center w-full ${
+      className={`fixed z-40 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex justify-center w-full border-b ${
         isScrolled
-          ? 'top-4 px-4'
-          : 'top-0 px-6 py-4 border-b border-[#454339]/20 bg-[#fdfcf8]'
+          ? "top-4 px-4 border-transparent bg-transparent"
+          : "top-0 px-6 py-4 border-[#454339]/20 bg-[#fdfcf8]"
       }`}
     >
       <div
-        className={`flex items-center justify-between transition-all duration-500 ${
+        className={`flex items-center transition-all duration-500 ${
           isScrolled
-            ? 'w-full max-w-[900px] bg-[#fdfcf8]/80 backdrop-blur-xl border border-[#454339]/15 shadow-[0_8px_32px_-8px_rgba(69,67,57,0.15)] rounded-full px-4 py-2'
-            : 'w-full max-w-[1120px]'
+            ? "w-auto md:w-full md:max-w-[900px] bg-[#fdfcf8]/80 backdrop-blur-xl border border-[#454339]/15 shadow-[0_8px_32px_-8px_rgba(69,67,57,0.15)] rounded-full px-4 py-2"
+            : "w-full max-w-[1120px] justify-center md:justify-between"
         }`}
       >
-        {/* Left: Empty Spacer for balance */}
-        <div className={`hidden md:block ${!isScrolled ? 'flex-1' : ''}`}></div>
+        <div
+          ref={navRef}
+          className="hidden md:flex items-center p-1 bg-[#454339]/5 rounded-full border border-[#454339]/10 relative"
+        >
+          <div
+            className="absolute top-1 bottom-1 bg-[#454339] rounded-full transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] shadow-md"
+            style={{
+              left: `${indicatorStyle.left}px`,
+              width: `${indicatorStyle.width}px`,
+              opacity: indicatorStyle.opacity,
+            }}
+          />
 
-        {/* Center: Desktop Navigation Links (Modern Pill Group) */}
-        <div className="hidden md:flex items-center p-1 bg-[#454339]/5 rounded-full border border-[#454339]/10">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
               <button
                 key={item.id}
+                data-active={isActive}
                 onClick={() => scrollToSection(item.id)}
-                className={`font-sans uppercase tracking-widest text-[10px] font-bold transition-all duration-300 relative px-4 py-2 rounded-full ${
+                className={`font-sans uppercase tracking-widest text-[10px] font-bold transition-colors duration-300 relative px-4 py-2 rounded-full z-10 ${
                   isActive
-                    ? 'text-[#fdfcf8] bg-[#454339] shadow-md'
-                    : 'text-[#454339]/70 hover:text-[#454339] hover:bg-[#454339]/10'
+                    ? "text-[#fdfcf8]"
+                    : "text-[#454339]/70 hover:text-[#454339] hover:bg-[#454339]/10"
                 }`}
               >
                 {item.label}
@@ -90,12 +124,12 @@ export default function Navbar({
         </div>
 
         {/* Right: Action Controls */}
-        <div className={`flex justify-end items-center gap-2 lg:gap-3 ${!isScrolled ? 'flex-1' : ''}`}>
+        <div className="flex justify-center md:justify-end items-center gap-2 sm:gap-3 md:flex-1">
           {/* Terminal Trigger */}
           <button
             onClick={onOpenTerminal}
             title="Open Interactive Developer Terminal (CLI)"
-            className="w-9 h-9 rounded-full text-[#454339] hover:bg-[#454339] hover:text-[#fdfcf8] bg-[#454339]/5 border border-[#454339]/20 transition-all flex items-center justify-center cursor-pointer shadow-sm"
+            className="w-9 h-9 rounded-full text-[#454339] hover:bg-[#454339] hover:text-[#fdfcf8] bg-[#454339]/5 border border-[#454339]/20 transition-all flex items-center justify-center cursor-pointer shadow-sm shrink-0"
           >
             <Terminal className="w-4 h-4" />
           </button>
@@ -103,7 +137,7 @@ export default function Navbar({
           {/* Resume Button */}
           <button
             onClick={onOpenResume}
-            className="bg-[#454339] text-[#fdfcf8] font-sans text-[10px] tracking-widest px-4 py-2.5 rounded-full font-bold hover:bg-[#333333] hover:shadow-lg hover:-translate-y-0.5 transition-all uppercase flex items-center gap-1.5 shadow-md"
+            className="bg-[#454339] text-[#fdfcf8] font-sans text-[10px] tracking-widest px-4 py-2.5 rounded-full font-bold hover:bg-[#333333] hover:shadow-lg hover:-translate-y-0.5 transition-all uppercase flex items-center gap-1.5 shadow-md shrink-0"
           >
             <FileText className="w-3.5 h-3.5" />
             RESUME
@@ -112,9 +146,13 @@ export default function Navbar({
           {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-9 h-9 rounded-full text-[#454339] hover:bg-[#454339] hover:text-[#fdfcf8] bg-[#454339]/5 border border-[#454339]/20 transition-all flex items-center justify-center shadow-sm"
+            className="md:hidden w-9 h-9 rounded-full text-[#454339] hover:bg-[#454339] hover:text-[#fdfcf8] bg-[#454339]/5 border border-[#454339]/20 transition-all flex items-center justify-center shadow-sm shrink-0"
           >
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {mobileMenuOpen ? (
+              <X className="w-4 h-4" />
+            ) : (
+              <Menu className="w-4 h-4" />
+            )}
           </button>
         </div>
       </div>
@@ -130,8 +168,8 @@ export default function Navbar({
                 onClick={() => scrollToSection(item.id)}
                 className={`text-left font-sans uppercase tracking-[0.2em] text-xs font-bold transition-all px-4 py-3 rounded-xl flex items-center justify-between ${
                   isActive
-                    ? 'bg-[#454339] text-[#fdfcf8]'
-                    : 'text-[#454339] hover:bg-[#454339]/10'
+                    ? "bg-[#454339] text-[#fdfcf8]"
+                    : "text-[#454339] hover:bg-[#454339]/10"
                 }`}
               >
                 <span>{item.label}</span>

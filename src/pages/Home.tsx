@@ -28,16 +28,31 @@ export default function Home() {
   // Scroll spy logic
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["about", "skills", "experience", "projects", "blogs", "recommendations", "contact"];
-      
+      const sections = [
+        "about",
+        "skills",
+        "experience",
+        "projects",
+        "blogs",
+        "milestones",
+        "recommendations",
+        "contact",
+      ];
+      const viewportMiddle = window.innerHeight / 2;
+
       let currentSection = "about"; // Default fallback
       for (let i = sections.length - 1; i >= 0; i--) {
         const sectionId = sections[i];
         const el = document.getElementById(sectionId);
         if (el) {
           const rect = el.getBoundingClientRect();
-          // If the section's top is past the middle of the viewport, it's active
-          if (rect.top <= window.innerHeight / 2) {
+          // Check if the top of the section is above the middle of the screen
+          // AND the bottom of the section is below the middle of the screen
+          if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
+            currentSection = sectionId;
+            break;
+          } else if (rect.top <= viewportMiddle && i === sections.length - 1) {
+            // If we are at the very bottom and the last section is above the middle, it's active
             currentSection = sectionId;
             break;
           }
@@ -46,7 +61,8 @@ export default function Home() {
       setActiveSection(currentSection);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Call on mount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -63,7 +79,7 @@ export default function Home() {
 
   return (
     <div
-      className={`min-h-screen bg-[#fdfcf8] text-[#454339] font-body-md overflow-x-hidden theme-${accentTheme}`}
+      className={`min-h-screen bg-[#fdfcf8] text-[#454339] font-body-md theme-${accentTheme}`}
     >
       {/* Fixed Top Navigation Bar */}
       <Navbar

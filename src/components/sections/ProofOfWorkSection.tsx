@@ -1,11 +1,20 @@
-import { achievementsData, openSourceData } from '../../data/portfolioData';
-import { Award, GitPullRequest, GitCommit, CheckCircle2, Terminal } from 'lucide-react';
+import { achievementsData, openSourceData } from "../../data/portfolioData";
+import {
+  Award,
+  GitPullRequest,
+  GitCommit,
+  CheckCircle2,
+  Terminal,
+} from "lucide-react";
 
 export default function ProofOfWorkSection() {
   // Using live GitHub contribution graph instead of mock terminal
 
   return (
-    <section className="py-20 px-6 lg:px-10 max-w-[1120px] mx-auto">
+    <section
+      id="milestones"
+      className="py-20 px-6 lg:px-10 max-w-[1120px] mx-auto"
+    >
       {/* Proof of Work Title */}
       <div className="mb-14 border-b-2 border-[#454339] pb-6">
         <span className="font-sans text-[11px] font-bold text-[#454339] uppercase block mb-2 tracking-[0.2em]">
@@ -15,7 +24,8 @@ export default function ProofOfWorkSection() {
           Proof of Work
         </h1>
         <p className="font-serif italic text-base text-[#454339]/80 max-w-2xl leading-relaxed">
-          A technical audit of engineering milestones, open-source commits, and collaborative architectural contributions.
+          A technical audit of engineering milestones, open-source commits, and
+          collaborative architectural contributions.
         </p>
       </div>
 
@@ -25,7 +35,9 @@ export default function ProofOfWorkSection() {
         <div className="lg:col-span-7 space-y-8">
           <div className="flex items-center gap-2 mb-6">
             <Award className="w-5 h-5 text-[#454339]" />
-            <h2 className="font-serif text-3xl font-black text-[#454339]">Milestones & Awards</h2>
+            <h2 className="font-serif text-3xl font-black text-[#454339]">
+              Milestones & Awards
+            </h2>
           </div>
 
           <div className="relative space-y-10 pl-6 border-l-2 border-[#454339]">
@@ -35,8 +47,8 @@ export default function ProofOfWorkSection() {
                 <div
                   className={`absolute -left-[31px] top-1.5 w-4 h-4 transition-all duration-300 border-2 border-[#454339] ${
                     item.isActive
-                      ? 'bg-[#454339]'
-                      : 'bg-[#ffffff] group-hover:bg-[#454339]'
+                      ? "bg-[#454339]"
+                      : "bg-[#ffffff] group-hover:bg-[#454339]"
                   }`}
                 ></div>
 
@@ -80,7 +92,9 @@ export default function ProofOfWorkSection() {
         <div className="lg:col-span-5 space-y-8">
           <div className="flex items-center gap-2 mb-6">
             <GitPullRequest className="w-5 h-5 text-[#454339]" />
-            <h2 className="font-serif text-3xl font-black text-[#454339]">Open Source</h2>
+            <h2 className="font-serif text-3xl font-black text-[#454339]">
+              Open Source
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 gap-6">
@@ -90,7 +104,7 @@ export default function ProofOfWorkSection() {
                 className="bg-[#ffffff] border-2 border-[#454339] p-6 shadow-[6px_6px_0px_#454339] transition-all duration-300 group"
               >
                 <div className="flex justify-between items-start mb-3 border-b border-[#454339]/10 pb-2">
-                  {repo.type === 'commit' ? (
+                  {repo.type === "commit" ? (
                     <GitCommit className="w-6 h-6 text-[#454339]" />
                   ) : (
                     <Terminal className="w-6 h-6 text-[#454339]" />
@@ -128,15 +142,14 @@ export default function ProofOfWorkSection() {
         </div>
 
         <div className="p-5 bg-[#fdfcf8] flex items-center justify-center overflow-hidden">
-          <img 
-            src="https://ghchart.rshah.org/454339/vetriselvan-pv" 
-            alt="Vetriselvan's GitHub Contribution Graph" 
+          <img
+            src="https://ghchart.rshah.org/454339/vetriselvan-pv"
+            alt="Vetriselvan's GitHub Contribution Graph"
             className="w-full h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
             loading="lazy"
           />
         </div>
       </div>
-
     </section>
   );
 }
